@@ -6,21 +6,15 @@
         <div class="col-sm-8">
           <ByteArkPlayerContainer
             :sources="video"
-            :poster="video.poster"
             :options="options" />
           <div class="mt-4">
-            <VideoInfo
-              :title="video.title"
-              :description="video.description" />
+            <VideoInfo :video="video" />
           </div>
-          <code>
-          </code>
         </div>
         <div class="col-sm-4">
           <VideoList
-            :video.sync="video"
             :videos="videos"
-            :onVideoSelected="setVideo" />
+            @onVideoSelected="setVideo" />
         </div>
       </div>
     </div>
@@ -66,7 +60,8 @@ export default {
   },
   methods: {
     setVideo(video) {
-      this.$emit('update:video', video);
+      this.video = video;
+      this.options = { ...this.options, sources: video };
     },
   },
 };

@@ -10,7 +10,7 @@
         :title="video.title"
         :poster="video.poster"
         :video.sync="video"
-        @onVideoSelected="setVideo(video)" />
+        @onVideoSelected="setVideo" />
     </ul>
   </div>
 </template>
@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     setVideo(video) {
-      this.$emit('update:video', video);
+      this.$emit('onVideoSelected', video);
     },
   },
 };

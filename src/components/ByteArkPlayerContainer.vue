@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="byteark-player-container">
     <PlayerPlaceholder
       v-if="!playerState.loaded"
       :class="customClass"
@@ -116,6 +116,11 @@ export default {
       videoNode: null,
     };
   },
+  watch: {
+    options(newValue) {
+      this.options = newValue;
+    },
+  },
   async beforeMount() {
     await this.loadPlayerResources();
     await this.createPlayerInstance();
@@ -220,3 +225,12 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.container-fill {
+  .byteark-player-container, .player-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>

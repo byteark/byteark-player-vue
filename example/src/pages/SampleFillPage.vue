@@ -1,18 +1,15 @@
 <template>
-  <div>
+  <div class="container-fill">
     <div style="width: 100%; height: 75vh">
       <ByteArkPlayerContainer
         :sources="video"
-        :poster="video.poster"
         :options="options" />
     </div>
     <NavBar />
     <div class="container mt-4">
       <div class="row">
         <div class="col-sm-8 mt-1">
-          <VideoInfo
-            :title="video.title"
-            :description="video.description" />
+          <VideoInfo :video="video" />
         </div>
         <div class="col-sm-4 mt-1">
           <VideoList
@@ -62,7 +59,8 @@ export default {
   },
   methods: {
     setVideo(video) {
-      this.$emit('update:video', video);
+      this.video = video;
+      this.options = { ...this.options, sources: video };
     },
   },
 };
