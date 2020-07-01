@@ -25,10 +25,11 @@
 </template>
 
 <script>
-import PlayerPlaceholder from '@/components/PlayerPlaceholder.vue';
-import loadScriptOrStyle from '@/helpers/loadScriptOrStyle.js';
+import PlayerPlaceholder from './PlayerPlaceholder.vue';
+import loadScriptOrStyle from '../helpers/loadScriptOrStyle';
 
 export default {
+  name: 'ByteArkPlayerContainer',
   props: {
     aspectRatio: {
       type: String,
@@ -48,7 +49,7 @@ export default {
     },
     createPlayerFunction: {
       type: Function,
-      default: () => this.defaultCreatePlayerFunction(),
+      default: () => null,
     },
     customClass: {
       type: String,
@@ -118,48 +119,44 @@ export default {
   beforeDestroy() {
     if (this.player) {
       this.player.dispose();
-      this.playerState.ready = false
+      this.playerState.ready = false;
     }
   },
   methods: {
-    onPlayerLoaded() {
+    defaultOnPlayerLoaded() {
       this.playerState.loaded = true;
-      try {
-        this.onPlayerLoaded();
-      } catch (error) {
-        console.error(error);
+      if (this.onPlayerLoaded) {
+        try {
+          this.onPlayerLoaded();
+        } catch (error) {
+          console.error(error);
+        }
       }
     },
-    onPlayerLoadError(originalError) {
-      this.playerState.error = {
-        error: {
-          code: 'ERROR_BYTEARK_PLAYER_VUE_100001',
-          message: 'Sorry, something went wrong when loading the video player.',
-          messageSecondary: 'Please refresh the page to try again.'
-        },
-        originalError,
-      };
-    },
-    onPlayerCreated() {
-      if (this.onPlayerCreated) {
-        this.onPlayerCreated(this.player)
-      }
-    },
-    onReady() {
-      if (this.onReady) {
-        this.onReady(this.player)
+    defaultOnPlayerLoadError(originalError) {
+      if (this.onPlayerLoadError) {
+        this.onPlayerLoadError(originalError);
+      } else {
+        this.playerState.error = {
+          error: {
+            code: 'ERROR_BYTEARK_PLAYER_VUE_100001',
+            message: 'Sorry, something went wrong when loading the video player.',
+            messageSecondary: 'Please refresh the page to try again.',
+          },
+          originalError,
+        };
       }
     },
     async loadPlayerResources() {
       try {
-        const promises = []
+        const promises = [];
         if (this.playerJsFileName) {
           promises.push(
             loadScriptOrStyle(
               `byteark-player-script-${this.playerVersion}`,
               `${this.playerEndpoint}/${this.playerVersion}/${this.playerJsFileName}`,
-              'script'
-            )
+              'script',
+            ),
           );
         }
         if (this.playerCssFileName) {
@@ -167,28 +164,30 @@ export default {
             loadScriptOrStyle(
               `byteark-player-style-${this.playerVersion}`,
               `${this.playerEndpoint}/${this.playerVersion}/${this.playerCssFileName}`,
-              'style'
-            )
+              'style',
+            ),
           );
         }
         await Promise.all(promises);
       } catch (originalError) {
-        this.onPlayerLoadError(originalError);
+        this.defaultOnPlayerLoadError(originalError);
         // Rethrow to stop following statements.
         throw originalError;
       }
-      this.onPlayerLoaded();
+      this.defaultOnPlayerLoaded();
     },
     createPlayerInstance() {
       this.player = this.createPlayerFunction(
         this.videoNode,
         this.props,
-        this.onReady
+        this.onReady,
       );
       this.onPlayerCreated();
     },
-    defaultCreatePlayerFunction(videoNode, options, onReady) {
-      return bytearkPlayer(videoNode, options, onReady)
+    // defaultCreatePlayerFunction(videoNode, options, onReady) {
+    //   return bytearkPlayer(videoNode, options, onReady);
+    // },
+    defaultCreatePlayerFunction() {
     },
     onVideoNodeCreated(node) {
       this.videoNode = node;

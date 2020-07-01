@@ -2,7 +2,7 @@
   <div class="container">
     <section class="section-welcome">
       <div class="heading">
-          <h1>ByteArk Player Container for React</h1>
+          <h1>ByteArk Player Container for Vue.js</h1>
       </div>
       <p>
         Welcome! This is an example for ByteArk Player Container for Vue.js
@@ -36,7 +36,7 @@
   </div>
 </template>
 <script>
-import ByteArkPlayerContainer from 'byteark-player-vue';
+import ByteArkPlayerContainer from '../../../src/components/ByteArkPlayerContainer.vue';
 
 export default {
   data() {
@@ -49,8 +49,8 @@ export default {
         sources: {
           src: 'https://inox-bhm9yr.cdn.byteark.com/video-objects/RI2PimuHxDXw/playlist.m3u8',
           type: 'application/x-mpegURL',
-          title: 'Big Buck Bunny'
-        }
+          title: 'Big Buck Bunny',
+        },
       },
     };
   },

@@ -1,48 +1,70 @@
-import React, { useState } from 'react'
-import { ByteArkPlayerContainer } from 'byteark-player-react'
-import SiteNav from './SiteNav.js'
-import VideoList from './VideoList.อีำ'
-import VideoInfo from './VideoInfo.vue'
-import videos from './videos.js'
-
-const SampleFluidApp = () => {
-  const [video, setVideo] = useState(videos[0])
-
-  const options = {
-    fluid: true,
-    aspectRatio: '16:9',
-    onPlayerCreated: () => {
-      console.log('Created!')
-    },
-    onReady: () => {
-      console.log('Ready!')
-    }
-  }
-
-  return (
-    <React.Fragment>
-      <SiteNav />
-      <div className="container">
-        <div className="row mt-4">
-          <div className="col-sm-8">
-            <ByteArkPlayerContainer
-              sources={video}
-              poster={video.poster}
-              { ...options }
-            />
-            <div className="mt-4">
-              <VideoInfo title={video.title} description={video.description} />
-            </div>
-            <code>
-            </code>
+<template>
+  <div>
+    <NavBar />
+    <div class="container">
+      <div class="row mt-4">
+        <div class="col-sm-8">
+          <ByteArkPlayerContainer
+            :sources="video"
+            :poster="video.poster"
+            :options="options" />
+          <div class="mt-4">
+            <VideoInfo
+              :title="video.title"
+              :description="video.description" />
           </div>
-          <div className="col-sm-4">
-            <VideoList videos={videos} onVideoSelected={setVideo} />
-          </div>
+          <code>
+          </code>
+        </div>
+        <div class="col-sm-4">
+          <VideoList
+            :videos="videos"
+            :onVideoSelected="setVideo" />
         </div>
       </div>
-    </React.Fragment>
-  )
-}
+    </div>
+  </div>
 
-export default SampleFluidApp
+</template>
+
+<script>
+// import ByteArkPlayerContainer from 'byteark-player-vue';
+import NavBar from '@/components/NavBar.vue';
+import VideoInfo from '@/components/VideoInfo.vue';
+import VideoList from '@/components/VideoList.vue';
+import videos from '../videos';
+import ByteArkPlayerContainer from '../../../src/components/ByteArkPlayerContainer.vue';
+
+export default {
+  data() {
+    return {
+      video: null,
+      setVideo: null,
+      options: {},
+      videos,
+    };
+  },
+  components: {
+    ByteArkPlayerContainer,
+    NavBar,
+    VideoInfo,
+    VideoList,
+  },
+  created() {
+    // eslint-disable-next-line
+    this.video = videos[0];
+    // eslint-disable-next-line
+    this.setVideo = videos[0];
+    this.options = {
+      fluid: true,
+      aspectRatio: '16:9',
+      onPlayerCreated: () => {
+        console.log('Created!');
+      },
+      onReady: () => {
+        console.log('Ready!');
+      },
+    };
+  },
+};
+</script>

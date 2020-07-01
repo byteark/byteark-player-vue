@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import ErrorMessageContainer from '@/components/ErrorMessageContainer.vue';
-import { calculatePlaceholderPaddingTopFromAspectRatio } from '@/helpers/styleCalculator.js';
+import ErrorMessageContainer from './ErrorMessageContainer.vue';
+import calculatePlaceholderPaddingTopFromAspectRatio from '../helpers/styleCalculator';
 
 export default {
   props: {
@@ -52,11 +52,13 @@ export default {
   methods: {
     checkProps() {
       if (this.fluid) {
-        this.customStyle.paddingTop = calculatePlaceholderPaddingTopFromAspectRatio(this.aspectRatio);
+        this.customStyle += 'padding-top: ';
+        this.customStyle += calculatePlaceholderPaddingTopFromAspectRatio(this.aspectRatio);
+        this.customStyle += 'px;';
       }
       if (!this.fluid && this.fill) {
-        this.customStyle.height = '100%';
-        this.customStyle.minHeight = '100%';
+        this.customStyle += 'height: 100%;';
+        this.customStyle += 'minHeight: 100%';
       }
     },
   },

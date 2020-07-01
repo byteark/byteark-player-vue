@@ -9,7 +9,7 @@
         :key="video.videoId"
         :title="video.title"
         :poster="video.poster"
-        @onVideoSelected="onVideoSelected(video)" />
+        :onVideoSelected="onVideoSelected(video)" />
     </ul>
   </div>
 </template>
@@ -25,11 +25,11 @@ export default {
     },
     onVideoSelected: {
       type: Function,
-      required: true,
+      default: () => () => {},
     },
   },
   components: {
     VideoListItem,
   },
-}
+};
 </script>

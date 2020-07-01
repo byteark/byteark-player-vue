@@ -25,13 +25,23 @@
 </template>
 
 <script>
-import ByteArkPlayerContainer from 'byteark-player-vue';
+// import ByteArkPlayerContainer from 'byteark-player-vue';
+
 import NavBar from '@/components/NavBar.vue';
 import VideoInfo from '@/components/VideoInfo.vue';
 import VideoList from '@/components/VideoList.vue';
-import videos from '../videos.js';
+import videos from '../videos';
+import ByteArkPlayerContainer from '../../../src/components/ByteArkPlayerContainer.vue';
 
 export default {
+  data() {
+    return {
+      video: null,
+      setVideo: null,
+      options: {},
+      videos,
+    };
+  },
   components: {
     ByteArkPlayerContainer,
     NavBar,
@@ -39,15 +49,18 @@ export default {
     VideoList,
   },
   created() {
-    const [video, setVideo] = videos[0];
-    const options = {
+    // eslint-disable-next-line
+    this.video = videos[0];
+    // eslint-disable-next-line
+    this.setVideo = videos[0];
+    this.options = {
       fill: true,
       onPlayerCreated: () => {
-        console.log('Created!')
+        console.log('Created!');
       },
       onReady: () => {
-        console.log('Ready!')
-      }
+        console.log('Ready!');
+      },
     };
   },
 };

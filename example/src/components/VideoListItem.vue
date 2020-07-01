@@ -9,7 +9,7 @@
         :src="poster"
         :alt="title" />
       <div class="media-body">
-        <p class="h6 mt-0 mb-1">{title}</p>
+        <p class="h6 mt-0 mb-1">{{title}}</p>
       </div>
     </a>
   </li>
