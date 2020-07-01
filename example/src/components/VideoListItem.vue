@@ -26,15 +26,19 @@ export default {
       type: String,
       required: true,
     },
-    onVideoSelected: {
-      type: Function,
+    video: {
       required: true,
     },
   },
   methods: {
     onClick() {
-      this.onVideoSelected();
+      this.$emit('onVideoSelected', this.video);
     },
   },
 };
 </script>
+<style scoped>
+a {
+  cursor: pointer;
+}
+</style>

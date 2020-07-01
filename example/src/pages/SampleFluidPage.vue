@@ -18,6 +18,7 @@
         </div>
         <div class="col-sm-4">
           <VideoList
+            :video.sync="video"
             :videos="videos"
             :onVideoSelected="setVideo" />
         </div>
@@ -39,7 +40,6 @@ export default {
   data() {
     return {
       video: null,
-      setVideo: null,
       options: {},
       videos,
     };
@@ -53,8 +53,6 @@ export default {
   created() {
     // eslint-disable-next-line
     this.video = videos[0];
-    // eslint-disable-next-line
-    this.setVideo = videos[0];
     this.options = {
       fluid: true,
       aspectRatio: '16:9',
@@ -65,6 +63,11 @@ export default {
         console.log('Ready!');
       },
     };
+  },
+  methods: {
+    setVideo(video) {
+      this.$emit('update:video', video);
+    },
   },
 };
 </script>

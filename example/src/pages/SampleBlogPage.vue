@@ -62,10 +62,10 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  max-width: 800px;
+  padding: 60px 0;
   .heading {
     text-align: center;
-    padding: 15vh 0;
+    padding: 8vh 0;
   }
   section {
     margin: 4px 0;

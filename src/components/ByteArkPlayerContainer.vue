@@ -12,12 +12,12 @@
       class="player-container">
       <audio
         v-if="audioOnlyMode"
-        :ref="onVideoNodeCreated"
+        ref="audioNode"
         :class="`video-js ${customClass}`"
         :style="`${!playerState.loaded ? 'display: none;' : ''}`" />
       <video
         playsInline
-        :ref="onVideoNodeCreated"
+        ref="videoNode"
         :class="`video-js ${customClass}`"
         :style="`${!playerState.loaded ? 'display: none;' : ''}`" />
     </div>
@@ -69,7 +69,7 @@ export default {
     },
     onPlayerCreated: {
       type: Function,
-      default: () => null,
+      default: () => () => {},
     },
     onPlayerLoaded: {
       type: Function,
@@ -81,7 +81,11 @@ export default {
     },
     onReady: {
       type: Function,
-      default: () => null,
+      default: () => () => {},
+    },
+    options: {
+      type: Object,
+      default: () => {},
     },
     poster: {
       type: String,
@@ -118,7 +122,7 @@ export default {
   },
   beforeDestroy() {
     if (this.player) {
-      this.player.dispose();
+      this.player = null;
       this.playerState.ready = false;
     }
   },
@@ -177,25 +181,42 @@ export default {
       this.defaultOnPlayerLoaded();
     },
     createPlayerInstance() {
-      this.player = this.createPlayerFunction(
-        this.videoNode,
-        this.props,
-        this.onReady,
+      this.videoNode = this.$refs.videoNode;
+
+      // !TEST ONLY NOT FOR PRODUCTION!
+      if (this.options.poster) {
+        this.$emit('update:poster', this.options.poster);
+        // this.poster = this.options.poster;
+      }
+      if (this.options.aspectRatio) {
+        this.$emit('update:aspectRatio', this.options.aspectRatio);
+      }
+      if (this.options.sources) {
+        this.$emit('update:sources', this.options.sources);
+        // this.sources = this.options.sources;
+      }
+
+      // !TEST ONLY NOT FOR PRODUCTION!
+
+      // this.poster = this.options.poster;
+      // this.aspectRatio = this.options.aspectRatio;
+      // this.sources = this.options.sources;
+
+      this.player = this.defaultCreatePlayerFunction(
+        this.videoNode, this.options, this.onReady,
       );
-      this.onPlayerCreated();
+      this.defaultOnPlayerCreated();
     },
-    // defaultCreatePlayerFunction(videoNode, options, onReady) {
-    //   return bytearkPlayer(videoNode, options, onReady);
-    // },
-    defaultCreatePlayerFunction() {
+    defaultCreatePlayerFunction(videoNode, options, onReady) {
+      // eslint-disable-next-line
+      return bytearkPlayer(videoNode, options, onReady);
     },
-    onVideoNodeCreated(node) {
-      this.videoNode = node;
+    defaultOnPlayerCreated() {
+      if (this.player) {
+        const div = document.getElementsByClassName('video-js')[0];
+        div.classList.remove('vjs-controls-disabled');
+      }
     },
   },
 };
 </script>
-
-<style scoped>
-
-</style>

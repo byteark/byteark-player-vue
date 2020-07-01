@@ -9,7 +9,8 @@
         :key="video.videoId"
         :title="video.title"
         :poster="video.poster"
-        :onVideoSelected="onVideoSelected(video)" />
+        :video.sync="video"
+        @onVideoSelected="setVideo(video)" />
     </ul>
   </div>
 </template>
@@ -23,13 +24,14 @@ export default {
       type: Array,
       required: true,
     },
-    onVideoSelected: {
-      type: Function,
-      default: () => () => {},
-    },
   },
   components: {
     VideoListItem,
+  },
+  methods: {
+    setVideo(video) {
+      this.$emit('update:video', video);
+    },
   },
 };
 </script>

@@ -37,7 +37,6 @@ export default {
   data() {
     return {
       video: null,
-      setVideo: null,
       options: {},
       videos,
     };
@@ -51,8 +50,6 @@ export default {
   created() {
     // eslint-disable-next-line
     this.video = videos[0];
-    // eslint-disable-next-line
-    this.setVideo = videos[0];
     this.options = {
       fill: true,
       onPlayerCreated: () => {
@@ -62,6 +59,11 @@ export default {
         console.log('Ready!');
       },
     };
+  },
+  methods: {
+    setVideo(video) {
+      this.$emit('update:video', video);
+    },
   },
 };
 </script>
