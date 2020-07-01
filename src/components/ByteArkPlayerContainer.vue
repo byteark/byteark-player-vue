@@ -42,13 +42,17 @@ export default {
       type: Boolean,
       default: () => true,
     },
-    customClass: {
-      type: String,
-      default: () => '',
-    },
     controls: {
       type: Boolean,
       default: () => true,
+    },
+    createPlayerFunction: {
+      type: Function,
+      default: () => this.defaultCreatePlayerFunction(),
+    },
+    customClass: {
+      type: String,
+      default: () => '',
     },
     fill: {
       type: Boolean,
@@ -104,6 +108,7 @@ export default {
         error: null,
       },
       videoStyle: {},
+      videoNode: null,
     };
   },
   async beforeMount() {
