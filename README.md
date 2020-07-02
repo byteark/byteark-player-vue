@@ -1,4 +1,4 @@
-# ByteArk Player Container for React
+# ByteArk Player Container for Vue.js
 
 Table of Contents
 * [Demo](#demo)

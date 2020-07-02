@@ -1973,7 +1973,7 @@ builtin-status-codes@^3.0.0:
   integrity sha1-hZgoeOIbmOHGZCXgPQF0eI9Wnug=
 
 "byteark-player-vue@file:..":
-  version "0.1.0"
+  version "1.0.0-beta1"
   dependencies:
     core-js "^3.6.5"
     vue "^2.6.11"

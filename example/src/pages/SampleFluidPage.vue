@@ -23,12 +23,11 @@
 </template>
 
 <script>
-// import ByteArkPlayerContainer from 'byteark-player-vue';
+import ByteArkPlayerContainer from 'byteark-player-vue';
 import NavBar from '@/components/NavBar.vue';
 import VideoInfo from '@/components/VideoInfo.vue';
 import VideoList from '@/components/VideoList.vue';
 import videos from '../videos';
-import ByteArkPlayerContainer from '../../../src/components/ByteArkPlayerContainer.vue';
 
 export default {
   data() {

@@ -1,10 +1,15 @@
 {
   "name": "byteark-player-vue",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0-beta1",
+  "main": "dist/byteark-player-vue.umd.js",
+  "description": "ByteArk Player Container for Vue.js",
+  "author": "byteark",
+  "license": "MIT",
+  "repository": "byteark/byteark-player-vue",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "make": "vue-cli-service build --target lib --name byteark-player-vue ./src/main.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -25,5 +30,8 @@
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

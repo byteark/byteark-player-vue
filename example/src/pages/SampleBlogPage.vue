@@ -36,7 +36,7 @@
   </div>
 </template>
 <script>
-import ByteArkPlayerContainer from '../../../src/components/ByteArkPlayerContainer.vue';
+import ByteArkPlayerContainer from 'byteark-player-vue';
 
 export default {
   data() {
@@ -68,7 +68,7 @@ export default {
     padding: 8vh 0;
   }
   section {
-    margin: 4px 0;
+    margin: 20px 0;
   }
 }
 </style>

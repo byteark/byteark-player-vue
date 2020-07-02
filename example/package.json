@@ -1,7 +1,7 @@
 {
   "name": "byteark-player-vue-example",
   "homepage": "https://byteark.github.io/byteark-player-vue",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "byteark-player-vue": "file:..",

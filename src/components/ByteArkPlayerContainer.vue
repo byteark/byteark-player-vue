@@ -135,7 +135,7 @@ export default {
         try {
           this.onPlayerLoaded();
         } catch (error) {
-          console.error(error);
+          this.playerState.error = error;
         }
       }
     },
@@ -252,11 +252,9 @@ export default {
 };
 </script>
 <style lang="scss">
-.container-fill {
-  .byteark-player-container, .player-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
+.byteark-player-container, .player-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 </style>
