@@ -126,7 +126,7 @@ Options that can be passed into `ByteArkPlayerContainer` component, without re-c
 | fluid                | Boolean        | true    | Use fluid layout mode.                                                       |
 | loop                 | Boolean        | -       | Replay the video after ending                                                |
 | muted                | Boolean        | -       | Play the video without sounds.                                               |
-| playerVersion        | String         | '1'     | Version of the player.                                                       |
+| playerVersion        | String         | 'v1'    | Version of the player.                                                       |
 | playbackRate         | Number         | 1.0     | Playback speed. 1.0 means original speed.                                    |
 | playsinline          | Boolean        | true    | Should be true so custom controls available on all platforms, including iOS. |
 | poster               | String         | -       | Image to show before playing the video.                                      |
