@@ -31,69 +31,33 @@ import loadScriptOrStyle from '../helpers/loadScriptOrStyle';
 export default {
   name: 'ByteArkPlayerContainer',
   props: {
-    aspectRatio: {
-      type: String,
-      default: () => '16:9',
-    },
-    audioOnlyMode: {
-      type: Boolean,
-      default: () => false,
-    },
-    autoplay: {
-      type: Boolean,
-      default: () => true,
-    },
-    controls: {
-      type: Boolean,
-      default: () => true,
-    },
     createPlayerFunction: {
       type: Function,
-      default: () => null,
+      default: () => {},
     },
     customClass: {
       type: String,
       default: () => '',
     },
-    fill: {
-      type: Boolean,
-      default: () => true,
-    },
-    fluid: {
-      type: Boolean,
-      default: () => true,
-    },
-    playsinline: {
-      type: Boolean,
-      default: () => true,
-    },
     onPlayerCreated: {
       type: Function,
-      default: () => () => {},
+      default: () => {},
     },
     onPlayerLoaded: {
       type: Function,
-      default: () => null,
+      default: () => {},
     },
     onPlayerLoadError: {
       type: Function,
-      default: () => null,
+      default: () => {},
     },
     onReady: {
       type: Function,
-      default: () => () => {},
+      default: () => {},
     },
     options: {
       type: Object,
-      default: () => {},
-    },
-    poster: {
-      type: String,
-      default: () => '',
-    },
-    sources: {
-      type: Object,
-      default: () => {},
+      default: () => ({}),
     },
   },
   components: {
@@ -101,6 +65,15 @@ export default {
   },
   data() {
     return {
+      aspectRatio: '16:9',
+      audioOnlyMode: true,
+      autoPlay: true,
+      controls: true,
+      fill: true,
+      fluid: true,
+      playsInLine: true,
+      poster: '',
+      sources: {},
       playerEndpoint: 'https://byteark-sdk.cdn.byteark.com/player/',
       playerVersion: 'v1',
       playerJsFileName: 'byteark-player.min.js',
@@ -114,6 +87,7 @@ export default {
       },
       videoStyle: {},
       videoNode: null,
+      audioNode: null,
     };
   },
   watch: {
@@ -123,6 +97,8 @@ export default {
   },
   async beforeMount() {
     await this.loadPlayerResources();
+  },
+  async mounted() {
     await this.createPlayerInstance();
   },
   beforeDestroy() {
@@ -187,29 +163,19 @@ export default {
     },
     createPlayerInstance() {
       this.videoNode = this.$refs.videoNode;
+      this.audioNode = this.$refs.audioNode;
 
-      // !TEST ONLY NOT FOR PRODUCTION!
       if (this.options.poster) {
-        this.$emit('update:poster', this.options.poster);
-        // this.poster = this.options.poster;
+        this.poster = this.options.poster;
       }
       if (this.options.aspectRatio) {
-        this.$emit('update:aspectRatio', this.options.aspectRatio);
+        this.aspectRatio = this.options.aspectRatio;
       }
       if (this.options.sources) {
-        this.$emit('update:sources', this.options.sources);
-        // this.sources = this.options.sources;
+        this.sources = this.options.sources;
       }
 
-      // !TEST ONLY NOT FOR PRODUCTION!
-
-      // this.poster = this.options.poster;
-      // this.aspectRatio = this.options.aspectRatio;
-      // this.sources = this.options.sources;
-
-      this.player = this.defaultCreatePlayerFunction(
-        this.videoNode, this.options, this.onReady,
-      );
+      this.player = this.defaultCreatePlayerFunction(this.videoNode, this.options, this.onReady);
       this.defaultOnPlayerCreated();
     },
     defaultCreatePlayerFunction(videoNode, options, onReady) {
