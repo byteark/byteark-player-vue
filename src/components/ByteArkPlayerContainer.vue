@@ -252,9 +252,11 @@ export default {
 };
 </script>
 <style lang="scss">
-.byteark-player-container, .player-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
+.container-fill {
+  .byteark-player-container, .player-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
