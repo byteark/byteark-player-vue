@@ -27,7 +27,7 @@ export default {
     },
     fill: {
       type: Boolean,
-      default: () => true,
+      default: () => false,
     },
     aspectRatio: {
       type: String,
@@ -54,7 +54,7 @@ export default {
       if (this.fluid) {
         this.customStyle += 'padding-top: ';
         this.customStyle += calculatePlaceholderPaddingTopFromAspectRatio(this.aspectRatio);
-        this.customStyle += 'px;';
+        this.customStyle += '%;';
       }
       if (!this.fluid && this.fill) {
         this.customStyle += 'height: 100%;';

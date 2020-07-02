@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="renderComponent"
     class="byteark-player-container"
     @click="playOrPause">
     <PlayerPlaceholder
@@ -11,7 +10,7 @@
       :fill="fill"
       :fluid="fluid" />
     <div
-      v-if="!playerState.error && playerState.loaded"
+      v-if="renderComponent && !playerState.error && playerState.loaded"
       class="player-container">
       <audio
         v-if="audioOnlyMode"
@@ -91,7 +90,6 @@ export default {
       },
       renderComponent: true,
       play: false,
-      videoStyle: {},
       videoNode: null,
     };
   },

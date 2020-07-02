@@ -21,7 +21,7 @@ export default {
 
 <style lang="scss" scoped>
 .error-message-container {
-  font-family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif", sans-serif;
+  font-family: inherit;
   position: absolute;
   top: 0;
   bottom: 0;
