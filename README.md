@@ -1,5 +1,7 @@
 # ByteArk Player Container for Vue.js
 
+[![NPM](https://img.shields.io/npm/v/@byteark/byteark-player-vue.svg)](https://www.npmjs.com/package/@byteark/byteark-player-vue) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
 Table of Contents
 * [Demo](#demo)
 * [Features](#features)
@@ -14,7 +16,7 @@ Table of Contents
 
 ## Demo
 
-You can try on [the demo page](#).
+You can try on [the demo page](https://byteark.github.io/byteark-player-vue/).
 
 ## Features
 
@@ -128,7 +130,7 @@ Options that can be passed into `ByteArkPlayerContainer` component, without re-c
 | playbackRate         | Number         | 1.0     | Playback speed. 1.0 means original speed.                                    |
 | playsinline          | Boolean        | true    | Should be true so custom controls available on all platforms, including iOS. |
 | poster               | String         | -       | Image to show before playing the video.                                      |
-| preload              | String         | -       | Preload the video before playing. (none|metadata|auto)                       |
+| preload              | String         | -       | Preload the video before playing. (none / metadata / auto)                   |
 | responsive           | Boolean        | -       | Auto show/hide controls depending on the screen size.                        |
 | sources              | Object/Array   | -       | Source of videos (See "Source Object")                                       |
 | volume               | Number         | -       | Video's volume between 0 and 1.                                              |
