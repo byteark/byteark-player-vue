@@ -5,10 +5,10 @@
       <div class="row mt-4">
         <div class="col-sm-8">
           <ByteArkPlayerContainer
-            :sources="video"
             :options="options" />
           <div class="mt-4">
-            <VideoInfo :video="video" />
+            <VideoInfo
+              :video="video" />
           </div>
         </div>
         <div class="col-sm-4">
@@ -50,18 +50,25 @@ export default {
     this.options = {
       fluid: true,
       aspectRatio: '16:9',
+      autoplay: true,
       onPlayerCreated: () => {
         console.log('Created!');
       },
       onReady: () => {
         console.log('Ready!');
       },
+      poster: this.video.poster,
+      sources: this.video,
     };
   },
   methods: {
     setVideo(video) {
       this.video = video;
-      this.options = { ...this.options, sources: video };
+      this.options = {
+        ...this.options,
+        poster: video.poster,
+        sources: video,
+      };
     },
   },
 };

@@ -2,7 +2,6 @@
   <div class="container-fill">
     <div style="width: 100%; height: 75vh">
       <ByteArkPlayerContainer
-        :sources="video"
         :options="options" />
     </div>
     <NavBar />
@@ -49,18 +48,26 @@ export default {
     this.video = videos[0];
     this.options = {
       fill: true,
+      aspectRatio: '16:9',
+      autoplay: true,
       onPlayerCreated: () => {
         console.log('Created!');
       },
       onReady: () => {
         console.log('Ready!');
       },
+      poster: this.video.poster,
+      sources: this.video,
     };
   },
   methods: {
     setVideo(video) {
       this.video = video;
-      this.options = { ...this.options, sources: video };
+      this.options = {
+        ...this.options,
+        poster: video.poster,
+        sources: video,
+      };
     },
   },
 };

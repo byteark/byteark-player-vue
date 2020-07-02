@@ -57,7 +57,9 @@ export default {
     },
     options: {
       type: Object,
-      default: () => ({}),
+      default() {
+        return {};
+      },
     },
   },
   components: {
@@ -66,7 +68,7 @@ export default {
   data() {
     return {
       aspectRatio: '16:9',
-      audioOnlyMode: true,
+      audioOnlyMode: false,
       autoPlay: true,
       controls: true,
       fill: true,
@@ -93,17 +95,20 @@ export default {
   watch: {
     options(newValue) {
       this.options = newValue;
+      this.createPlayerInstance();
     },
   },
   async beforeMount() {
+    if (this.player) {
+      this.player.dispose();
+      this.playerState.ready = false;
+    }
     await this.loadPlayerResources();
-  },
-  async mounted() {
     await this.createPlayerInstance();
   },
   beforeDestroy() {
     if (this.player) {
-      this.player = null;
+      this.player.dispose();
       this.playerState.ready = false;
     }
   },
@@ -175,8 +180,18 @@ export default {
         this.sources = this.options.sources;
       }
 
-      this.player = this.defaultCreatePlayerFunction(this.videoNode, this.options, this.onReady);
+      this.player = this.defaultCreatePlayerFunction(
+        this.videoNode,
+        this.options,
+        this.defaultOnReady,
+      );
+
       this.defaultOnPlayerCreated();
+    },
+    defaultOnReady() {
+      if (this.onReady) {
+        this.onReady();
+      }
     },
     defaultCreatePlayerFunction(videoNode, options, onReady) {
       // eslint-disable-next-line
@@ -184,7 +199,8 @@ export default {
     },
     defaultOnPlayerCreated() {
       if (this.player) {
-        const div = document.getElementsByClassName('video-js')[0];
+        // eslint-disable-next-line
+        const div = document.getElementById(this.player.id_);
         div.classList.remove('vjs-controls-disabled');
       }
     },
