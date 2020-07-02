@@ -1,6 +1,6 @@
 # ByteArk Player Container for Vue.js
 
-[![NPM](https://img.shields.io/npm/v/@byteark/byteark-player-vue.svg)](https://www.npmjs.com/package/@byteark/byteark-player-vue) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/byteark-player-vue.svg)](https://www.npmjs.com/package/byteark-player-vue) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 Table of Contents
 * [Demo](#demo)
