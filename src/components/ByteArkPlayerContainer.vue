@@ -1,5 +1,8 @@
 <template>
-  <div class="byteark-player-container">
+  <div
+    v-if="renderComponent"
+    class="byteark-player-container"
+    @click="playOrPause">
     <PlayerPlaceholder
       v-if="!playerState.loaded"
       :class="customClass"
@@ -8,18 +11,17 @@
       :fill="fill"
       :fluid="fluid" />
     <div
-      v-if="!playerState.error"
+      v-if="!playerState.error && playerState.loaded"
       class="player-container">
       <audio
         v-if="audioOnlyMode"
-        ref="audioNode"
-        :class="`video-js ${customClass}`"
-        :style="`${!playerState.loaded ? 'display: none;' : ''}`" />
+        ref="videoNode"
+        :class="`video-js ${customClass}`" />
       <video
         playsInline
+        v-if="!audioOnlyMode"
         ref="videoNode"
-        :class="`video-js ${customClass}`"
-        :style="`${!playerState.loaded ? 'display: none;' : ''}`" />
+        :class="`video-js ${customClass}`" />
     </div>
   </div>
 </template>
@@ -69,9 +71,9 @@ export default {
     return {
       aspectRatio: '16:9',
       audioOnlyMode: false,
-      autoPlay: true,
+      autoplay: true,
       controls: true,
-      fill: true,
+      fill: false,
       fluid: true,
       playsInLine: true,
       poster: '',
@@ -87,32 +89,46 @@ export default {
         ready: false,
         error: null,
       },
+      renderComponent: true,
+      play: false,
       videoStyle: {},
       videoNode: null,
-      audioNode: null,
     };
   },
   watch: {
-    options(newValue) {
+    async options(newValue) {
       this.options = newValue;
-      this.createPlayerInstance();
+      this.mapValues(newValue);
+
+      this.renderComponent = false;
+      this.$nextTick(() => {
+        this.renderComponent = true;
+      });
+
+      await this.initPlayerInstance();
     },
   },
   async beforeMount() {
-    if (this.player) {
-      this.player.dispose();
-      this.playerState.ready = false;
+    if (this.options) {
+      this.mapValues(this.options);
     }
-    await this.loadPlayerResources();
-    await this.createPlayerInstance();
+    await this.initPlayerInstance();
   },
   beforeDestroy() {
     if (this.player) {
       this.player.dispose();
       this.playerState.ready = false;
+      this.playerState.loaded = false;
     }
   },
   methods: {
+    async initPlayerInstance() {
+      await this.loadPlayerResources();
+      await this.createPlayerInstance();
+      if (this.autoplay) {
+        this.play = true;
+      }
+    },
     defaultOnPlayerLoaded() {
       this.playerState.loaded = true;
       if (this.onPlayerLoaded) {
@@ -168,7 +184,6 @@ export default {
     },
     createPlayerInstance() {
       this.videoNode = this.$refs.videoNode;
-      this.audioNode = this.$refs.audioNode;
 
       if (this.options.poster) {
         this.poster = this.options.poster;
@@ -199,9 +214,38 @@ export default {
     },
     defaultOnPlayerCreated() {
       if (this.player) {
+        this.playerState.ready = true;
+        this.playerState.loaded = true;
         // eslint-disable-next-line
         const div = document.getElementById(this.player.id_);
         div.classList.remove('vjs-controls-disabled');
+        if (this.options.fill) {
+          div.classList.remove('vjs-fluid');
+          div.classList.add('vjs-fill');
+        }
+      }
+    },
+    playOrPause() {
+      if (!this.play) {
+        this.player.play();
+        this.play = true;
+      } else {
+        this.player.pause();
+        this.play = false;
+      }
+    },
+    mapValues(newValue) {
+      this.autoplay = newValue.autoplay;
+      this.fluid = newValue.fluid;
+      this.fill = newValue.fill;
+      if (newValue.aspectRatio) {
+        this.aspectRatio = newValue.aspectRatio;
+      }
+      if (newValue.sources) {
+        this.sources = newValue.sources;
+      }
+      if (newValue.poster) {
+        this.poster = newValue.poster;
       }
     },
   },

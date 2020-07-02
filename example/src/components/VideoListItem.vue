@@ -5,7 +5,6 @@
       @click.prevent="onClick">
       <img
         class="rounded mr-3"
-        style="width: 100%"
         :src="poster"
         :alt="title" />
       <div class="media-body">
@@ -40,5 +39,8 @@ export default {
 <style scoped>
 a {
   cursor: pointer;
+}
+img {
+  width: 200px;
 }
 </style>

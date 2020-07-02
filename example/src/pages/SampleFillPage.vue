@@ -47,6 +47,7 @@ export default {
     // eslint-disable-next-line
     this.video = videos[0];
     this.options = {
+      fluid: false,
       fill: true,
       aspectRatio: '16:9',
       autoplay: true,
