@@ -1,13 +1,13 @@
 # ByteArk Player Container for Vue.js
 
-[![NPM](https://img.shields.io/npm/v/byteark-player-vue.svg)](https://www.npmjs.com/package/byteark-player-vue) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/@byteark/byteark-player-vue.svg)](https://www.npmjs.com/package/@byteark/byteark-player-vue) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 Table of Contents
 * [Demo](#demo)
 * [Features](#features)
 * [Installation](#installation)
 * [Usages](#usages)
-* [Basic Props](#basic-props)
+* [Options prop](#options-prop)
     * [Source Object](#source-object)
 * [Callback Props](#callback-props)
 * [Advanced Usages](#advance-usages)
@@ -31,9 +31,9 @@ This library is distributed via NPM. You may install from NPM or Yarn.
 
 ```bash
 # For NPM
-npm install --save byteark-player-vue
+npm install --save @byteark/byteark-player-vue
 # For Yarn
-yarn add byteark-player-vue
+yarn add @byteark/byteark-player-vue
 ```
 
 ## Usage
@@ -112,9 +112,11 @@ export default {
 </script>
 ```
 
-## Basic Props
+## Options prop
 
-Options that can be passed into `ByteArkPlayerContainer` component, without re-creating the player instance. Additional properties will be passed to the player.
+You have to pass options into `ByteArkPlayerContainer` 
+
+Additional properties will be passed to the player.
 
 | Name                 | Type           | Default | Description                                                                  |
 |----------------------|----------------|---------|------------------------------------------------------------------------------|
@@ -132,7 +134,7 @@ Options that can be passed into `ByteArkPlayerContainer` component, without re-c
 | poster               | String         | -       | Image to show before playing the video.                                      |
 | preload              | String         | -       | Preload the video before playing. (none / metadata / auto)                   |
 | responsive           | Boolean        | -       | Auto show/hide controls depending on the screen size.                        |
-| sources              | Object/Array   | -       | Source of videos (See "Source Object")                                       |
+| sources              | Object/Array   | -       | Source of videos (See [Source Object](#source-object))                                       |
 | volume               | Number         | -       | Video's volume between 0 and 1.                                              |
 
 You can also use other props not listed here,
