@@ -36,7 +36,7 @@
   </div>
 </template>
 <script>
-import ByteArkPlayerContainer from 'byteark-player-vue';
+import ByteArkPlayerContainer from '@byteark/byteark-player-vue';
 
 export default {
   data() {
