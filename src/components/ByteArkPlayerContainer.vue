@@ -11,6 +11,7 @@
       :fluid="fluid" />
     <div
       v-if="renderComponent && !playerState.error && playerState.loaded"
+      :class="{'container-fill' : fill}"
       class="player-container">
       <audio
         v-if="audioOnlyMode"
@@ -224,12 +225,20 @@ export default {
       }
     },
     playOrPause() {
-      if (!this.play) {
-        this.player.play();
-        this.play = true;
-      } else {
-        this.player.pause();
-        this.play = false;
+      const playPromise = this.player.play();
+      if (playPromise !== undefined) {
+        playPromise
+          // eslint-disable-next-line
+          .then((_) => {
+            if (this.play) {
+              this.player.pause();
+              this.play = false;
+            } else {
+              this.play = true;
+            }
+          }).catch((error) => {
+            this.playerState.error = error;
+          });
       }
     },
     mapValues(newValue) {
@@ -250,11 +259,16 @@ export default {
 };
 </script>
 <style lang="scss">
-.container-fill {
-  .byteark-player-container, .player-container {
+.player-container {
+  &.container-fill {
     position: relative;
     width: 100%;
     height: 100%;
   }
+}
+.byteark-player-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 </style>
