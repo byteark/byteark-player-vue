@@ -1,5 +1,6 @@
 <template>
   <div
+    :style="`${fill ? 'height: 100%' : ''}`"
     class="byteark-player-container"
     @click="playOrPause">
     <PlayerPlaceholder
@@ -259,22 +260,17 @@ export default {
 };
 </script>
 <style lang="scss">
+.byteark-player-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
 .player-container {
   &.container-fill {
     position: relative;
     width: 100%;
     height: 100%;
-    .byteark-player-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
   }
-}
-.byteark-player-container {
-  position: relative;
-  width: 100%;
-  height: auto;
 }
 
 </style>
