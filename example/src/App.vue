@@ -13,7 +13,7 @@ export default {};
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
 @import '~bootstrap/scss/bootstrap';
-@import '../../dist/@byteark/byteark-player-vue.css';
+@import '~@byteark/byteark-player-vue/dist/@byteark/byteark-player-vue.css';
 
 body {
   margin: 0;

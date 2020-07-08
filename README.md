@@ -47,7 +47,7 @@ Include and register `ByteArkPlayerContainer` in your project.
 </template>
 
 <script>
-import ByteArkPlayerContainer from 'byteark-player-vue';
+import ByteArkPlayerContainer from '@byteark/byteark-player-vue';
 
 export default {
   components: {
@@ -75,7 +75,19 @@ export default {
 </script>
 ```
 
-Use ```fill``` mode if you want the video to be displayed on a fixed-size container.
+Include stylesheet in your project
+
+```vue
+// Inside your main SCSS file
+@import '~@byteark/byteark-player-vue/dist/@byteark/byteark-player-vue.css';
+
+// Or inside the component
+<style lang="scss" scoped>
+@import '~@byteark/byteark-player-vue/dist/@byteark/byteark-player-vue.css';
+</style>
+```
+
+Use `fill` mode if you want the video to be displayed on a fixed-size container.
 
 ```vue
 <template>
