@@ -96,7 +96,7 @@ Use `fill` mode if you want the video to be displayed on a fixed-size container.
 </template>
 
 <script>
-import ByteArkPlayerContainer from 'byteark-player-vue';
+import ByteArkPlayerContainer from '@byteark/byteark-player-vue';
 
 export default {
   components: {
@@ -207,7 +207,7 @@ or using the player instance that sent from `onReady` callback.
 </template>
 
 <script>
-import ByteArkPlayerContainer from 'byteark-player-vue';
+import ByteArkPlayerContainer from '@byteark/byteark-player-vue';
 
 export default {
   components: {
@@ -248,7 +248,7 @@ export default {
 </template>
 
 <script>
-import ByteArkPlayerContainer from 'byteark-player-vue';
+import ByteArkPlayerContainer from '@byteark/byteark-player-vue';
 
 export default {
   components: {
@@ -288,7 +288,7 @@ export default {
 </template>
 
 <script>
-import ByteArkPlayerContainer from 'byteark-player-vue';
+import ByteArkPlayerContainer from '@byteark/byteark-player-vue';
 
 export default {
   components: {
