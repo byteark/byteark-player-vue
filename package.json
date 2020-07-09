@@ -1,6 +1,6 @@
 {
   "name": "@byteark/byteark-player-vue",
-  "version": "1.0.0-beta8",
+  "version": "1.0.0-beta9",
   "main": "dist/@byteark/byteark-player-vue.umd.js",
   "description": "ByteArk Player Container for Vue.js",
   "author": "byteark",
@@ -16,8 +16,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "core-js": "^3.6.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",

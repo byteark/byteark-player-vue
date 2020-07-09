@@ -2,7 +2,7 @@
   <div
     :style="`${fill ? 'height: 100%' : ''}`"
     class="byteark-player-container"
-    @click="playOrPause">
+    @click.stop="playOrPause">
     <PlayerPlaceholder
       v-if="!playerState.loaded"
       :class="customClass"
@@ -28,8 +28,12 @@
 </template>
 
 <script>
+// import Vue from 'vue';
+// import Vue2TouchEvents from 'vue2-touch-events';
 import PlayerPlaceholder from './PlayerPlaceholder.vue';
 import loadScriptOrStyle from '../helpers/loadScriptOrStyle';
+
+// Vue.use(Vue2TouchEvents);
 
 export default {
   name: 'ByteArkPlayerContainer',
@@ -225,21 +229,26 @@ export default {
         }
       }
     },
-    playOrPause() {
-      const playPromise = this.player.play();
-      if (playPromise !== undefined) {
-        playPromise
-          // eslint-disable-next-line
-          .then((_) => {
-            if (this.play) {
-              this.player.pause();
-              this.play = false;
-            } else {
-              this.play = true;
-            }
-          }).catch((error) => {
-            this.playerState.error = error;
-          });
+    playOrPause(event) {
+      if (event.target === 'span.vjs-icon-placeholder') {
+        return;
+      }
+      if (event.target.className === 'vjs-tech' || event.target === 'div.vjs-poster') {
+        const playPromise = this.player.play();
+        if (playPromise !== undefined) {
+          playPromise
+            // eslint-disable-next-line
+            .then((_) => {
+              if (this.play) {
+                this.player.pause();
+                this.play = false;
+              } else {
+                this.play = true;
+              }
+            }).catch((error) => {
+              this.playerState.error = error;
+            });
+        }
       }
     },
     mapValues(newValue) {
