@@ -20,6 +20,7 @@
         :class="`video-js ${customClass}`" />
       <video
         playsInline
+        controls
         v-if="!audioOnlyMode"
         ref="videoNode"
         :class="`video-js ${customClass}`" />
@@ -28,12 +29,8 @@
 </template>
 
 <script>
-// import Vue from 'vue';
-// import Vue2TouchEvents from 'vue2-touch-events';
 import PlayerPlaceholder from './PlayerPlaceholder.vue';
 import loadScriptOrStyle from '../helpers/loadScriptOrStyle';
-
-// Vue.use(Vue2TouchEvents);
 
 export default {
   name: 'ByteArkPlayerContainer',
@@ -220,13 +217,6 @@ export default {
       if (this.player) {
         this.playerState.ready = true;
         this.playerState.loaded = true;
-        // eslint-disable-next-line
-        const div = document.getElementById(this.player.id_);
-        div.classList.remove('vjs-controls-disabled');
-        if (this.options.fill) {
-          div.classList.remove('vjs-fluid');
-          div.classList.add('vjs-fill');
-        }
       }
     },
     playOrPause(event) {
