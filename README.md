@@ -154,8 +154,8 @@ The following 4 properties can also be added to `options` for an advanced usage.
 |---------------------------|----------|---------------------------------------------------------------------------------|
 | playerVersion             | String   | Custom version of the player. (default: 'v1')                                   |
 | playerEndpoint            | String   | Endpoint to the video player (without version part and ending slash).           |
-| playerJsFileName          | String   | File name of player's JS.                                                       |
-| playerCssFileName         | String   | File name of player's CSS.                                                      |
+| playerJsFileName          | String   | File name of player's JS. (default: 'byteark-player.min.js')                    |
+| playerCssFileName         | String   | File name of player's CSS. (default: 'byteark-player.min.css')                  |
 
 You can also use other props not listed here,
 but appear as [VideoJS's options](https://docs.videojs.com/tutorial-options.html#playbackrates).
@@ -192,7 +192,6 @@ and some advanced behaviours.
 
 | Name                      | Type     | Description                                                                     |
 |---------------------------|----------|---------------------------------------------------------------------------------|
-| createPlaceholderFunction | Function | Custom video placeholder. This function should return a React component.        |
 | createPlayerFunction      | Function | Custom video instance. This function should return a VideoJS's player instance. |
 
 ## Advance Usages
