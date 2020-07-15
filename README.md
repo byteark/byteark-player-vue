@@ -140,7 +140,6 @@ Additional properties will be passed to the player.
 | fluid                | Boolean        | true    | Use fluid layout mode.                                                       |
 | loop                 | Boolean        | -       | Replay the video after ending                                                |
 | muted                | Boolean        | -       | Play the video without sounds.                                               |
-| playerVersion        | String         | 'v1'    | Version of the player.                                                       |
 | playbackRate         | Number         | 1.0     | Playback speed. 1.0 means original speed.                                    |
 | playsinline          | Boolean        | true    | Should be true so custom controls available on all platforms, including iOS. |
 | poster               | String         | -       | Image to show before playing the video.                                      |
@@ -149,12 +148,12 @@ Additional properties will be passed to the player.
 | sources              | Object/Array   | -       | Source of videos (See [Source Object](#source-object))                       |
 | volume               | Number         | -       | Video's volume between 0 and 1.                                              |
 
-Advanced properties that can be passed with `options` 
+The following 4 properties can also be added to `options` for an advanced usage.
 
 | Name                      | Type     | Description                                                                     |
 |---------------------------|----------|---------------------------------------------------------------------------------|
-| playerVersion             | String   | Custom video placeholder. This function should return a React component.        |
-| playerEndpoint            | String   | Endpoint to the video player (without version part).                            |
+| playerVersion             | String   | Custom version of the player. (default: 'v1')                                   |
+| playerEndpoint            | String   | Endpoint to the video player (without version part and ending slash).           |
 | playerJsFileName          | String   | File name of player's JS.                                                       |
 | playerCssFileName         | String   | File name of player's CSS.                                                      |
 
