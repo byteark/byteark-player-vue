@@ -153,7 +153,7 @@ Advanced properties that can be passed with `options`
 
 | Name                      | Type     | Description                                                                     |
 |---------------------------|----------|---------------------------------------------------------------------------------|
-| playerVersion             | Function | Custom video placeholder. This function should return a React component.        |
+| playerVersion             | String   | Custom video placeholder. This function should return a React component.        |
 | playerEndpoint            | String   | Endpoint to the video player (without version part).                            |
 | playerJsFileName          | String   | File name of player's JS.                                                       |
 | playerCssFileName         | String   | File name of player's CSS.                                                      |
