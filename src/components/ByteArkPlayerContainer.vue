@@ -155,6 +155,21 @@ export default {
       }
     },
     async loadPlayerResources() {
+      if (this.options.playerEndpoint) {
+        this.playerEndpoint = this.options.playerEndpoint;
+      }
+      if (this.options.playerVersion) {
+        this.playerVersion = this.options.playerVersion;
+      }
+      if (this.options.playerJsFileName) {
+        this.playerJsFileName = this.options.playerJsFileName;
+      }
+      if (this.options.playerCssFileName) {
+        this.playerCssFileName = this.options.playerCssFileName;
+      }
+      if (this.options.techCanOverridePoster) {
+        this.techCanOverridePoster = this.options.techCanOverridePoster;
+      }
       try {
         const promises = [];
         if (this.playerJsFileName) {

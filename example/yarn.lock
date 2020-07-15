@@ -823,10 +823,9 @@
     to-fast-properties "^2.0.0"
 
 "@byteark/byteark-player-vue@file:..":
-  version "1.0.0-beta9"
+  version "1.0.0-beta10"
   dependencies:
     core-js "^3.6.5"
-    vue "^2.6.11"
 
 "@hapi/address@2.x.x":
   version "2.1.4"
