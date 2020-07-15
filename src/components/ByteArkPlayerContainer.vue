@@ -65,6 +65,22 @@ export default {
         return {};
       },
     },
+    playerVersion: {
+      type: String,
+      default: () => 'v1',
+    },
+    playerEndpoint: {
+      type: String,
+      default: () => 'https://byteark-sdk.cdn.byteark.com/player',
+    },
+    playerJsFileName: {
+      type: String,
+      default: () => 'byteark-player.min.js',
+    },
+    playerCssFileName: {
+      type: String,
+      default: () => 'byteark-player.min.css',
+    },
   },
   components: {
     PlayerPlaceholder,
@@ -80,10 +96,6 @@ export default {
       playsInLine: true,
       poster: '',
       sources: {},
-      playerEndpoint: 'https://byteark-sdk.cdn.byteark.com/player/',
-      playerVersion: 'v1',
-      playerJsFileName: 'byteark-player.min.js',
-      playerCssFileName: 'byteark-player.min.css',
       techCanOverridePoster: false,
       player: null,
       playerState: {
@@ -155,18 +167,6 @@ export default {
       }
     },
     async loadPlayerResources() {
-      if (this.options.playerEndpoint) {
-        this.playerEndpoint = this.options.playerEndpoint;
-      }
-      if (this.options.playerVersion) {
-        this.playerVersion = this.options.playerVersion;
-      }
-      if (this.options.playerJsFileName) {
-        this.playerJsFileName = this.options.playerJsFileName;
-      }
-      if (this.options.playerCssFileName) {
-        this.playerCssFileName = this.options.playerCssFileName;
-      }
       if (this.options.techCanOverridePoster) {
         this.techCanOverridePoster = this.options.techCanOverridePoster;
       }

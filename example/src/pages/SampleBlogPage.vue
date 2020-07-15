@@ -16,6 +16,7 @@
         This player is created with fluid layout mode, and setting aspect ratio to 16:9.
       </p>
       <ByteArkPlayerContainer
+        :playerVersion="v2"
         :options="options" />
     </section>
     <section class="section-more-examples">
