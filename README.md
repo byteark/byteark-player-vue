@@ -146,8 +146,17 @@ Additional properties will be passed to the player.
 | poster               | String         | -       | Image to show before playing the video.                                      |
 | preload              | String         | -       | Preload the video before playing. (none / metadata / auto)                   |
 | responsive           | Boolean        | -       | Auto show/hide controls depending on the screen size.                        |
-| sources              | Object/Array   | -       | Source of videos (See [Source Object](#source-object))                                       |
+| sources              | Object/Array   | -       | Source of videos (See [Source Object](#source-object))                       |
 | volume               | Number         | -       | Video's volume between 0 and 1.                                              |
+
+Advanced properties that can be passed with `options` 
+
+| Name                      | Type     | Description                                                                     |
+|---------------------------|----------|---------------------------------------------------------------------------------|
+| playerVersion             | Function | Custom video placeholder. This function should return a React component.        |
+| playerEndpoint            | String   | Endpoint to the video player (without version part).                            |
+| playerJsFileName          | String   | File name of player's JS.                                                       |
+| playerCssFileName         | String   | File name of player's CSS.                                                      |
 
 You can also use other props not listed here,
 but appear as [VideoJS's options](https://docs.videojs.com/tutorial-options.html#playbackrates).
@@ -186,9 +195,6 @@ and some advanced behaviours.
 |---------------------------|----------|---------------------------------------------------------------------------------|
 | createPlaceholderFunction | Function | Custom video placeholder. This function should return a React component.        |
 | createPlayerFunction      | Function | Custom video instance. This function should return a VideoJS's player instance. |
-| playerEndpoint            | String   | Endpoint to the video player (without version part).                            |
-| playerJsFileName          | String   | File name of player's JS.                                                       |
-| playerCssFileName         | String   | File name of player's CSS.                                                      |
 
 ## Advance Usages
 
