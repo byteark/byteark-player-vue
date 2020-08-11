@@ -43,15 +43,23 @@ export default {
       type: String,
       default: () => '',
     },
-    onPlayerCreated: {
-      type: Function,
-      default: () => {},
-    },
     onPlayerLoaded: {
       type: Function,
       default: () => {},
     },
     onPlayerLoadError: {
+      type: Function,
+      default: () => {},
+    },
+    onPlayerSetup: {
+      type: Function,
+      default: () => {},
+    },
+    onPlayerSetupError: {
+      type: Function,
+      default: () => {},
+    },
+    onPlayerCreated: {
       type: Function,
       default: () => {},
     },
@@ -80,8 +88,8 @@ export default {
       playsInLine: true,
       poster: '',
       sources: {},
-      playerEndpoint: 'https://byteark-sdk.cdn.byteark.com/player',
-      playerVersion: 'v1',
+      playerEndpoint: 'https://byteark-sdk.cdn.byteark.com/player-core',
+      playerVersion: 'v2',
       playerJsFileName: 'byteark-player.min.js',
       playerCssFileName: 'byteark-player.min.css',
       techCanOverridePoster: false,
@@ -125,13 +133,14 @@ export default {
   methods: {
     async initPlayerInstance() {
       await this.loadPlayerResources();
+      await this.setupPlayer();
       await this.createPlayerInstance();
+
       if (this.autoplay) {
         this.play = true;
       }
     },
     defaultOnPlayerLoaded() {
-      this.playerState.loaded = true;
       if (this.onPlayerLoaded) {
         try {
           this.onPlayerLoaded();
@@ -152,6 +161,37 @@ export default {
           },
           originalError,
         };
+      }
+    },
+    defaultOnPlayerSetup() {
+      this.playerState.loaded = true;
+
+      if (this.onPlayerSetup) {
+        this.onPlayerSetup();
+      }
+    },
+    defaultOnPlayerSetupError(originalError) {
+      if (this.onPlayerSetupError) {
+        this.onPlayerSetupError(originalError);
+      } else {
+        this.playerState.error = {
+          error: {
+            code: 'ERROR_BYTEARK_PLAYER_VUE_100001',
+            message: 'Sorry, something went wrong when loading the video player.',
+            messageSecondary: 'Please refresh the page to try again.',
+          },
+          originalError,
+        };
+      }
+    },
+    defaultOnPlayerCreated() {
+      if (this.player) {
+        this.playerState.ready = true;
+        this.playerState.loaded = true;
+      }
+
+      if (this.onPlayerCreated) {
+        this.onPlayerCreated();
       }
     },
     async loadPlayerResources() {
@@ -186,7 +226,18 @@ export default {
       }
       this.defaultOnPlayerLoaded();
     },
-    createPlayerInstance() {
+    async setupPlayer() {
+      try {
+        await window.bytearkPlayer.setup(this.options, loadScriptOrStyle);
+
+        this.defaultOnPlayerSetup();
+      } catch (originalError) {
+        this.defaultOnPlayerSetupError(originalError);
+        // Rethrow to stop following statements.
+        throw originalError;
+      }
+    },
+    async createPlayerInstance() {
       this.videoNode = this.$refs.videoNode;
 
       if (this.options.poster) {
@@ -198,6 +249,17 @@ export default {
       if (this.options.sources) {
         this.sources = this.options.sources;
       }
+
+      // check can autoplay video
+      // eslint-disable-next-line no-underscore-dangle
+      const autoplayResult_ = await window.bytearkPlayer.canAutoplay(this.options);
+
+      // eslint-disable-next-line no-underscore-dangle
+      this.options.autoplayResult_ = autoplayResult_;
+
+      this.options.autoplay = autoplayResult_.autoplay;
+
+      this.options.muted = autoplayResult_.muted;
 
       this.player = this.defaultCreatePlayerFunction(
         this.videoNode,
@@ -213,15 +275,9 @@ export default {
       }
     },
     defaultCreatePlayerFunction(videoNode, options, onReady) {
-      // eslint-disable-next-line
-      return bytearkPlayer(videoNode, options, onReady);
+      return window.bytearkPlayer.init(videoNode, options, onReady);
     },
-    defaultOnPlayerCreated() {
-      if (this.player) {
-        this.playerState.ready = true;
-        this.playerState.loaded = true;
-      }
-    },
+
     playOrPause(event) {
       if (event.target === 'span.vjs-icon-placeholder') {
         return;
