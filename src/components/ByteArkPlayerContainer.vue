@@ -47,7 +47,7 @@ export default {
       type: Function,
       default: () => {},
     },
-    onPlayerLoadError: {
+    onPlayerLoadingError: {
       type: Function,
       default: () => {},
     },
@@ -144,15 +144,15 @@ export default {
     defaultOnPlayerLoaded() {
       if (this.onPlayerLoaded) {
         try {
-          this.onPlayerLoaded();
+          this.$emit('onPlayerLoaded', this.player);
         } catch (error) {
           this.playerState.error = error;
         }
       }
     },
-    defaultOnPlayerLoadError(originalError) {
-      if (this.onPlayerLoadError) {
-        this.onPlayerLoadError(originalError);
+    defaultOnPlayerLoadingError(originalError) {
+      if (this.onPlayerLoadingError) {
+        this.$emit('onPlayerLoadingError', originalError);
       } else {
         this.playerState.error = {
           error: {
@@ -192,7 +192,7 @@ export default {
       }
 
       if (this.onPlayerCreated) {
-        this.onPlayerCreated();
+        this.$emit('onPlayerCreated', this.player);
       }
     },
     async loadPlayerResources() {
@@ -221,7 +221,7 @@ export default {
         }
         await Promise.all(promises);
       } catch (originalError) {
-        this.defaultOnPlayerLoadError(originalError);
+        this.defaultOnPlayerLoadingError(originalError);
         // Rethrow to stop following statements.
         throw originalError;
       }
@@ -274,7 +274,7 @@ export default {
     },
     defaultOnReady() {
       if (this.onReady) {
-        this.onReady();
+        this.$emit('onReady', this.player);
       }
     },
     defaultCreatePlayerFunction(videoNode, options, onReady) {
@@ -352,6 +352,7 @@ export default {
 .byteark-player-container {
   position: relative;
   width: 100%;
+
   height: auto;
 }
 .player-container {
