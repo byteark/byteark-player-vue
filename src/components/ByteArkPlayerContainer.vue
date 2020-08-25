@@ -94,6 +94,7 @@ export default {
       playerCssFileName: 'byteark-player.min.css',
       techCanOverridePoster: false,
       player: null,
+      plugins: [],
       playerState: {
         loaded: false,
         ready: false,
@@ -243,9 +244,11 @@ export default {
       if (this.options.poster) {
         this.poster = this.options.poster;
       }
+
       if (this.options.aspectRatio) {
         this.aspectRatio = this.options.aspectRatio;
       }
+
       if (this.options.sources) {
         this.sources = this.options.sources;
       }
@@ -282,6 +285,7 @@ export default {
       if (event.target === 'span.vjs-icon-placeholder') {
         return;
       }
+
       if (event.target.className === 'vjs-tech' || event.target === 'div.vjs-poster') {
         const playPromise = this.player.play();
         if (playPromise !== undefined) {
@@ -304,29 +308,41 @@ export default {
       this.autoplay = newValue.autoplay;
       this.fluid = newValue.fluid;
       this.fill = newValue.fill;
+
       if (newValue.aspectRatio) {
         this.aspectRatio = newValue.aspectRatio;
       }
+
       if (newValue.sources) {
         this.sources = newValue.sources;
       }
+
       if (newValue.poster) {
         this.poster = newValue.poster;
       }
+
       if (newValue.playerEndpoint) {
         this.playerEndpoint = newValue.playerEndpoint;
       }
+
       if (newValue.playerVersion) {
         this.playerVersion = newValue.playerVersion;
       }
+
       if (newValue.playerJsFileName) {
         this.playerJsFileName = newValue.playerJsFileName;
       }
+
       if (newValue.playerCssFileName) {
         this.playerCssFileName = newValue.playerCssFileName;
       }
+
       if (newValue.techCanOverridePoster) {
         this.techCanOverridePoster = newValue.techCanOverridePoster;
+      }
+
+      if (newValue.plugins) {
+        this.plugins = newValue.plugins;
       }
     },
   },

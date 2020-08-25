@@ -3,16 +3,20 @@
 [![NPM](https://img.shields.io/npm/v/@byteark/byteark-player-vue.svg)](https://www.npmjs.com/package/@byteark/byteark-player-vue) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 Table of Contents
-* [Demo](#demo)
-* [Features](#features)
-* [Installation](#installation)
-* [Usages](#usages)
-* [Options prop](#options-prop)
-    * [Source Object](#source-object)
-* [Callback Props](#callback-props)
-* [Advanced Usages](#advance-usages)
-    * [Controlling Players](#controlling-players)
-    * [Request Media/Encryption with credentials](#request-media-encryption-with-credentials)
+- [ByteArk Player Container for Vue.js](#byteark-player-container-for-vuejs)
+  - [Demo](#demo)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Options prop](#options-prop)
+    - [Source Object](#source-object)
+  - [Callback Props](#callback-props)
+  - [Advanced Props](#advanced-props)
+  - [Advance Usages](#advance-usages)
+    - [Controlling Players](#controlling-players)
+    - [Using VideoJS Plugins](#using-videojs-plugins)
+    - [Request Media/Encryption with credentials](#request-mediaencryption-with-credentials)
+  - [License](#license)
 
 ## Demo
 
@@ -130,23 +134,24 @@ You have to pass options into `ByteArkPlayerContainer`
 
 Additional properties will be passed to the player.
 
-| Name                 | Type           | Default | Description                                                                  |
-|----------------------|----------------|---------|------------------------------------------------------------------------------|
-| autoplay             | Boolean        | true    | Autoplay the video after the player is created.                              |
-| aspectRatio          | String         | '16:9'  | Use with fluid layout mode, to inform expected video's aspect ratio          |
-| controls             | Boolean        | true    | Show the controls bar.                                                       |
-| customClass          | String         | -       | Custom class name to be applied to the video container.                      |
-| fill                 | Boolean        | false   | Use fill layout mode.                                                        |
-| fluid                | Boolean        | true    | Use fluid layout mode.                                                       |
-| loop                 | Boolean        | -       | Replay the video after ending                                                |
-| muted                | Boolean        | -       | Play the video without sounds.                                               |
-| playbackRate         | Number         | 1.0     | Playback speed. 1.0 means original speed.                                    |
-| playsinline          | Boolean        | true    | Should be true so custom controls available on all platforms, including iOS. |
-| poster               | String         | -       | Image to show before playing the video.                                      |
-| preload              | String         | -       | Preload the video before playing. (none / metadata / auto)                   |
-| responsive           | Boolean        | -       | Auto show/hide controls depending on the screen size.                        |
-| sources              | Object/Array   | -       | Source of videos (See [Source Object](#source-object))                       |
-| volume               | Number         | -       | Video's volume between 0 and 1.                                              |
+| Name         | Type         | Default | Description                                                                  |
+|--------------|--------------|---------|------------------------------------------------------------------------------|
+| autoplay     | Boolean      | true    | Autoplay the video after the player is created.                              |
+| aspectRatio  | String       | '16:9'  | Use with fluid layout mode, to inform expected video's aspect ratio          |
+| controls     | Boolean      | true    | Show the controls bar.                                                       |
+| customClass  | String       | -       | Custom class name to be applied to the video container.                      |
+| fill         | Boolean      | false   | Use fill layout mode.                                                        |
+| fluid        | Boolean      | true    | Use fluid layout mode.                                                       |
+| loop         | Boolean      | -       | Replay the video after ending                                                |
+| muted        | Boolean      | -       | Play the video without sounds.                                               |
+| playbackRate | Number       | 1.0     | Playback speed. 1.0 means original speed.                                    |
+| playsinline  | Boolean      | true    | Should be true so custom controls available on all platforms, including iOS. |
+| poster       | String       | -       | Image to show before playing the video.                                      |
+| preload      | String       | -       | Preload the video before playing. (none / metadata / auto)                   |
+| responsive   | Boolean      | -       | Auto show/hide controls depending on the screen size.                        |
+| sources      | Object/Array | -       | Source of videos (See [Source Object](#source-object))                       |
+| volume       | Number       | -       | Video's volume between 0 and 1.                                              |
+| plugins      | Array        | -       | Videojs's plugins                                                            |
 
 The following 4 properties can also be added to `options` for an advanced usage.
 
