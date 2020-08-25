@@ -182,7 +182,7 @@ You can inject some behaviour directly to the ByteArk Player, and the VideoJS's 
 | Name                 | Type     | Callback Parameters   | Description                                                                 |
 |----------------------|----------|-----------------------|-----------------------------------------------------------------------------|
 | onPlayerCreated      | Function | `(player)`            | Callback function to be called when a player instance is created.           |
-| onPlayerLoadingError | Function | `({ code, message })` | Callback function to be called when there're an error about loading player. |
+| onPlayerLoadingError | Function | `(originalError)`     | Callback function to be called when there's an error about loading player.  |
 | onReady              | Function | `(player)`            | Callback function to be called when a player instance is ready.             |
 
 ## Advanced Props
@@ -204,7 +204,7 @@ or using the player instance that sent from `onReady` callback.
 ```vue
 <template>
   <ByteArkPlayerContainer
-    :onReady="onReady"
+    @onReady="onReady"
     :options="playerOptions" />
   <button @click.stop="playerInstance.play()">Play</button>
   <button @click.stop="playerInstance.pause()">Pause</button>
@@ -247,7 +247,7 @@ export default {
 ```vue
 <template>
   <ByteArkPlayerContainer
-    :onReady="onReady"
+    @onReady="onReady"
     :options="playerOptions" />
 </template>
 
@@ -287,7 +287,7 @@ export default {
 ```vue
 <template>
   <ByteArkPlayerContainer
-    :onReady="onReady"
+    @onReady="onReady"
     :options="playerOptions" />
 </template>
 

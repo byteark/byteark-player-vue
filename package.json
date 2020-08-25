@@ -1,6 +1,6 @@
 {
   "name": "@byteark/byteark-player-vue",
-  "version": "1.0.0-beta16",
+  "version": "1.0.0-beta17",
   "main": "dist/@byteark/byteark-player-vue.umd.js",
   "description": "ByteArk Player Container for Vue.js",
   "author": "byteark",
