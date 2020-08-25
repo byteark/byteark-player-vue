@@ -271,7 +271,7 @@ export default {
     },
     defaultOnReady() {
       if (this.onReady) {
-        this.onReady(this.player);
+        return this.onReady(this.player);
       }
     },
     defaultCreatePlayerFunction(videoNode, options, onReady) {
