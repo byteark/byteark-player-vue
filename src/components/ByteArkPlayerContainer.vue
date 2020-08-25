@@ -271,7 +271,7 @@ export default {
     },
     defaultOnReady() {
       if (this.onReady) {
-        this.onReady();
+        this.onReady(this.player);
       }
     },
     defaultCreatePlayerFunction(videoNode, options, onReady) {
@@ -336,6 +336,7 @@ export default {
 .byteark-player-container {
   position: relative;
   width: 100%;
+
   height: auto;
 }
 .player-container {
