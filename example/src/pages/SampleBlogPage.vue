@@ -16,6 +16,11 @@
         This player is created with fluid layout mode, and setting aspect ratio to 16:9.
       </p>
       <ByteArkPlayerContainer
+        @ready="console.log('I\'m Ready!')"
+        @firstplay="console.log('This is the first play.')"
+        @play="console.log('You hit play')"
+        @pause="console.log('You hit pause')"
+        @ended="console.log('The video ended. What to watch next?')"
         :options="options" />
     </section>
     <section class="section-more-examples">
@@ -53,6 +58,9 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    console: () => console,
   },
   components: {
     ByteArkPlayerContainer,

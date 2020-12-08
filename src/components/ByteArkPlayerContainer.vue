@@ -1,8 +1,7 @@
 <template>
   <div
     :style="`${fill ? 'height: 100%' : ''}`"
-    class="byteark-player-container"
-    @click.stop="playOrPause">
+    class="byteark-player-container">
     <PlayerPlaceholder
       v-if="!playerState.loaded"
       :class="customClass"
@@ -63,10 +62,6 @@ export default {
       type: Function,
       default: () => {},
     },
-    onReady: {
-      type: Function,
-      default: () => {},
-    },
     options: {
       type: Object,
       default() {
@@ -102,6 +97,8 @@ export default {
       },
       renderComponent: true,
       play: false,
+      firstPlay: true,
+      videoEnded: false,
       videoNode: null,
     };
   },
@@ -139,6 +136,8 @@ export default {
 
       if (this.autoplay) {
         this.play = true;
+        this.$emit('firstplay', this.player);
+        this.firstPlay = false;
       }
     },
     defaultOnPlayerLoaded() {
@@ -189,6 +188,26 @@ export default {
       if (this.player) {
         this.playerState.ready = true;
         this.playerState.loaded = true;
+        // this.player.on('ended', this.$emit('ended', this.player));
+        this.player.on('ended', () => {
+          this.videoEnded = true;
+          this.$emit('ended', this.player);
+        });
+        this.player.on('play', () => {
+          this.play = true;
+          if (this.firstPlay) {
+            this.$emit('firstplay', this.player);
+            this.firstPlay = false;
+          } else {
+            this.$emit('play', this.player);
+          }
+        });
+        this.player.on('pause', () => {
+          if (!this.videoEnded) {
+            this.$emit('pause', this.player);
+          }
+          this.play = false;
+        });
       }
 
       if (this.onPlayerCreated) {
@@ -273,36 +292,11 @@ export default {
       this.defaultOnPlayerCreated();
     },
     defaultOnReady() {
-      if (this.onReady) {
-        this.$emit('onReady', this.player);
-      }
+      this.$emit('ready', this.player);
+      this.videoEnded = false;
     },
     defaultCreatePlayerFunction(videoNode, options, onReady) {
       return window.bytearkPlayer.init(videoNode, options, onReady);
-    },
-
-    playOrPause(event) {
-      if (event.target === 'span.vjs-icon-placeholder') {
-        return;
-      }
-
-      if (event.target.className === 'vjs-tech' || event.target === 'div.vjs-poster') {
-        const playPromise = this.player.play();
-        if (playPromise !== undefined) {
-          playPromise
-            // eslint-disable-next-line
-            .then((_) => {
-              if (this.play) {
-                this.player.pause();
-                this.play = false;
-              } else {
-                this.play = true;
-              }
-            }).catch((error) => {
-              this.playerState.error = error;
-            });
-        }
-      }
     },
     mapValues(newValue) {
       this.autoplay = newValue.autoplay;
