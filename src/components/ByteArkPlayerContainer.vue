@@ -42,23 +42,11 @@ export default {
       type: String,
       default: () => '',
     },
-    onPlayerLoaded: {
-      type: Function,
-      default: () => {},
-    },
-    onPlayerLoadingError: {
-      type: Function,
-      default: () => {},
-    },
     onPlayerSetup: {
       type: Function,
       default: () => {},
     },
     onPlayerSetupError: {
-      type: Function,
-      default: () => {},
-    },
-    onPlayerCreated: {
       type: Function,
       default: () => {},
     },
@@ -141,27 +129,22 @@ export default {
       }
     },
     defaultOnPlayerLoaded() {
-      if (this.onPlayerLoaded) {
-        try {
-          this.$emit('onPlayerLoaded', this.player);
-        } catch (error) {
-          this.playerState.error = error;
-        }
+      try {
+        this.$emit('loaded', this.player);
+      } catch (error) {
+        this.playerState.error = error;
       }
     },
     defaultOnPlayerLoadingError(originalError) {
-      if (this.onPlayerLoadingError) {
-        this.$emit('onPlayerLoadingError', originalError);
-      } else {
-        this.playerState.error = {
-          error: {
-            code: 'ERROR_BYTEARK_PLAYER_VUE_100001',
-            message: 'Sorry, something went wrong when loading the video player.',
-            messageSecondary: 'Please refresh the page to try again.',
-          },
-          originalError,
-        };
-      }
+      this.playerState.error = {
+        error: {
+          code: 'ERROR_BYTEARK_PLAYER_VUE_100001',
+          message: 'Sorry, something went wrong when loading the video player.',
+          messageSecondary: 'Please refresh the page to try again.',
+        },
+        originalError,
+      };
+      this.$emit('error', originalError);
     },
     defaultOnPlayerSetup() {
       this.playerState.loaded = true;
@@ -208,10 +191,34 @@ export default {
           }
           this.play = false;
         });
+        this.player.on('timeupdate', () => {
+          this.$emit('timeupdate', this.player);
+        });
+        this.player.on('seeking', () => {
+          this.$emit('seeking', this.player);
+        });
+        this.player.on('waiting', () => {
+          this.$emit('waiting', this.player);
+        });
+        this.player.on('fullscreenchange', () => {
+          this.$emit('fullscreenchange', this.player);
+        });
+        this.player.on('volumechange', () => {
+          this.$emit('volumechange', this.player);
+        });
+        this.player.on('ratechange', () => {
+          this.$emit('ratechange', this.player);
+        });
+        this.player.on('enterpictureinpicture', () => {
+          this.$emit('enterpictureinpicture', this.player);
+        });
+        this.player.on('leavepictureinpicture', () => {
+          this.$emit('leavepictureinpicture', this.player);
+        });
       }
 
       if (this.onPlayerCreated) {
-        this.$emit('onPlayerCreated', this.player);
+        this.$emit('created', this.player);
       }
     },
     async loadPlayerResources() {

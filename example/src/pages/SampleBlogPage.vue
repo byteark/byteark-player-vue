@@ -21,6 +21,14 @@
         @play="console.log('You hit play')"
         @pause="console.log('You hit pause')"
         @ended="console.log('The video ended. What to watch next?')"
+        @timeupdate="console.log('Time Updated')"
+        @seeking="console.log('You seeked the video.')"
+        @waiting="console.log('Waiting for the video...')"
+        @fullscreenchange="console.log('You toggled Full Screen Mode')"
+        @volumechange="console.log('You adjusted the volume')"
+        @ratechange="console.log('You adjusted the playing speed')"
+        @enterpictureinpicture="console.log('You entered Picture-in-Picture Mode')"
+        @leavepictureinpicture="console.log('You exited Picture-in-Picture Mode')"
         :options="options" />
     </section>
     <section class="section-more-examples">
