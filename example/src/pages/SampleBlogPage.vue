@@ -64,6 +64,7 @@ export default {
           type: 'application/x-mpegURL',
           title: 'Big Buck Bunny',
         },
+        playbackRates: [0.5, 1, 1.5, 2],
       },
     };
   },

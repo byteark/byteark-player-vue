@@ -2,6 +2,19 @@
   <div class="container-fill">
     <div style="width: 100%; height: 75vh">
       <ByteArkPlayerContainer
+        @ready="console.log('I\'m Ready!')"
+        @firstplay="console.log('This is the first play.')"
+        @play="console.log('You hit play')"
+        @pause="console.log('You hit pause')"
+        @ended="console.log('The video ended. What to watch next?')"
+        @timeupdate="console.log('Time Updated')"
+        @seeking="console.log('You seeked the video.')"
+        @waiting="console.log('Waiting for the video...')"
+        @fullscreenchange="console.log('You toggled Full Screen Mode')"
+        @volumechange="console.log('You adjusted the volume')"
+        @ratechange="console.log('You adjusted the playing speed')"
+        @enterpictureinpicture="console.log('You entered Picture-in-Picture Mode')"
+        @leavepictureinpicture="console.log('You exited Picture-in-Picture Mode')"
         :options="options" />
     </div>
     <NavBar />
@@ -35,6 +48,9 @@ export default {
       videos,
     };
   },
+  computed: {
+    console: () => console,
+  },
   components: {
     ByteArkPlayerContainer,
     NavBar,
@@ -49,14 +65,9 @@ export default {
       fill: true,
       aspectRatio: '16:9',
       autoplay: true,
-      onPlayerCreated: () => {
-        console.log('Created!');
-      },
-      onReady: () => {
-        console.log('Ready!');
-      },
       poster: this.video.poster,
       sources: this.video,
+      playbackRates: [0.5, 1, 1.5, 2],
     };
   },
   methods: {
