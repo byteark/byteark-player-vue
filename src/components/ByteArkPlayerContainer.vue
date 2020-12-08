@@ -216,10 +216,7 @@ export default {
           this.$emit('leavepictureinpicture', this.player);
         });
       }
-
-      if (this.onPlayerCreated) {
-        this.$emit('created', this.player);
-      }
+      this.$emit('created', this.player);
     },
     async loadPlayerResources() {
       if (this.options.techCanOverridePoster) {

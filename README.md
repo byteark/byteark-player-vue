@@ -180,19 +180,27 @@ The `sources` object has 2 required fields.
 
 To provide multiple version of sources, you can use array of source objects.
 
-## Callback Props
+## Event Handling
 
-You can inject some behaviour directly to the ByteArk Player, and the VideoJS's instance.
+ByteArk player emits events that you can use to trigger your custom functions.
 
-| Name                 | Type     | Callback Parameters   | Description                                                                 |
-|----------------------|----------|-----------------------|-----------------------------------------------------------------------------|
-| onPlayerCreated      | Function | `(player)`            | Callback function to be called when a player instance is created.           |
-| onPlayerLoadingError | Function | `(originalError)`     | Callback function to be called when there's an error about loading player.  |
-| ready                | Function | `(player)`            | Callback function to be called when a player instance is ready.             |
-| firstplay            | Function | `(player)`            | Callback function to be called when the video plays for the first time.     |
-| play                 | Function | `(player)`            | Callback function to be called when the video plays or the user hit play.   |
-| pause                | Function | `(player)`            | Callback function to be called when the video plays or the user hit pause.  |
-| ended                | Function | `(player)`            | Callback function to be called when the video ended.                        |
+| Event Name              | Callback Parameters   | Trigger Condition                                                           |
+|-------------------------|-----------------------|-----------------------------------------------------------------------------|
+| created                 | `(player)`            | When the player instance was created.                                       |
+| error                   | `(originalError)`     | When there was an error while loading player.                               |
+| ready                   | `(player)`            | When the player instance was ready to play.                                 |
+| firstplay               | `(player)`            | When the video played for the first time.                                   |
+| play                    | `(player)`            | When the video played or the user hit play.                                 |
+| pause                   | `(player)`            | When the video played or the user hit pause.                                |
+| ended*                  | `(player)`            | When the video ended.                                                       |
+| timeupdate              | `(player)`            | When the current playback time changed.                                     |
+| seeking                 | `(player)`            | When the the user seeked the video.                                         |
+| waiting                 | `(player)`            | When the player is waiting for the video.                                   |
+| fullscreenchange        | `(player)`            | When the user entered or exited the full screen mode.                       |
+| volumechange            | `(player)`            | When the user adjusted the volume.                                          |
+| ratechange              | `(player)`            | When the user adjusted the playback speed.                                  |
+| enterpictureinpicture   | `(player)`            | When the entered Picture-in-Picture mode.                                   |
+| leavepictureinpicture   | `(player)`            | When the exited Picture-in-Picture mode.                                    |
 
 ## Advanced Props
 
@@ -202,6 +210,8 @@ and some advanced behaviours.
 | Name                      | Type     | Description                                                                     |
 |---------------------------|----------|---------------------------------------------------------------------------------|
 | createPlayerFunction      | Function | Custom video instance. This function should return a VideoJS's player instance. |
+| onPlayerSetup             | Function | Inject your custom functions before creating a player instance.                 |
+| onPlayerSetupError        | Function | Inject your custom functions when there was an error during the setup.          |
 
 ## Advance Usages
 
@@ -218,6 +228,14 @@ or using the player instance that sent from `onReady` callback.
     @play="onPlay"
     @pause="onPause"
     @ended="onVideoEnded"
+    @timeupdate="onTimeUpdated"
+    @seeking="onVideoSeeked"
+    @waiting="onPlayerWaiting"
+    @fullscreenchange="onToggleFullScreen"
+    @volumechange="onVolumeChange"
+    @ratechange="onPlaybackSpeedChanged"
+    @enterpictureinpicture="onPIPEntered"
+    @leavepictureinpicture="onPIPExited"
     :options="playerOptions" />
   <button @click.stop="playerInstance.play()">Play</button>
   <button @click.stop="playerInstance.pause()">Pause</button>
@@ -263,6 +281,30 @@ export default {
       this.doSomething();
     },
     onVideoEnded(playerInstance) {
+      this.doSomething();
+    },
+    onTimeUpdated(playerInstance) {
+      this.doSomething();
+    },
+    onVideoSeeked(playerInstance) {
+      this.doSomething();
+    },
+    onPlayerWaiting(playerInstance) {
+      this.doSomething();
+    },
+    onToggleFullScreen(playerInstance) {
+      this.doSomething();
+    },
+    onVolumeChange(playerInstance) {
+      this.doSomething();
+    },
+    onPlaybackSpeedChanged(playerInstance) {
+      this.doSomething();
+    },
+    onPIPEntered(playerInstance) {
+      this.doSomething();
+    },
+    onPIPExited(playerInstance) {
       this.doSomething();
     },
   },
