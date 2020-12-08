@@ -199,8 +199,8 @@ ByteArk Player emits events that you can use to trigger your custom functions.
 | fullscreenchange        | `(player)`            | When the user entered or exited the full screen mode.                       |
 | volumechange            | `(player)`            | When the user adjusted the volume.                                          |
 | ratechange              | `(player)`            | When the user adjusted the playback speed.                                  |
-| enterpictureinpicture   | `(player)`            | When the entered Picture-in-Picture mode.                                   |
-| leavepictureinpicture   | `(player)`            | When the exited Picture-in-Picture mode.                                    |
+| enterpictureinpicture   | `(player)`            | When the user entered Picture-in-Picture mode.                                   |
+| leavepictureinpicture   | `(player)`            | When the user exited Picture-in-Picture mode.                                    |
 
 ⁕ You are reminded that [HTML5 video element fires a pause event whenever the playback stops](https://www.w3.org/2010/05/video/mediaevents.html), including at the end of the content.
   
