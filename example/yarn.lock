@@ -822,8 +822,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@byteark/byteark-player-vue@file:..":
-  version "1.0.0-beta13"
+"@byteark/byteark-player-vue@^1.0.0-beta19":
+  version "1.0.0-beta19"
+  resolved "https://registry.yarnpkg.com/@byteark/byteark-player-vue/-/byteark-player-vue-1.0.0-beta19.tgz#3d812122d6251af704b1ff9b389746c4cef4f839"
+  integrity sha512-FvBrxkZDlgQBIJkLfVPTh+YiPgi09kWcEdnL/zm471MGVIBPNXJ/AysG6oCVXFakBRILwRpGLip3SvvIGADEVQ==
   dependencies:
     core-js "^3.6.5"
 
