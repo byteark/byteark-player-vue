@@ -190,15 +190,15 @@ ByteArk Player emits events that you can use to trigger your custom functions.
 | error                   | `(originalError)`     | When there was an error while loading player.                               |
 | ready                   | `(player)`            | When the player instance was ready to play.                                 |
 | firstplay               | `(player)`            | When the video played for the first time.                                   |
-| play                    | `(player)`            | When the video played or the user hit play.                                 |
-| pause                   | `(player)`            | When the video played or the user hit pause.                                |
+| play                    | `(player, currentTime)`            | When the video played or the user hit play.      (Value of currentTime is a number in seconds)                           |
+| pause                   | `(player, currentTime)`            | When the video played or the user hit pause.     (Value of currentTime is a number in seconds)                           |
 | ended⁕                  | `(player)`            | When the video ended.                                                       |
-| timeupdate              | `(player)`            | When the current playback time changed.                                     |
-| seeking                 | `(player)`            | When the the user seeked the video.                                         |
+| timeupdate              | `(player, currentTime)`            | When the current playback time changed.           (Value of currentTime is a number in seconds)                          |
+| seeking                 | `(player, currentTime)`            | When the the user seeked the video.               (Value of currentTime is a number in seconds)                          |
 | waiting                 | `(player)`            | When the player is waiting for the video.                                   |
-| fullscreenchange        | `(player)`            | When the user entered or exited the full screen mode.                       |
-| volumechange            | `(player)`            | When the user adjusted the volume.                                          |
-| ratechange              | `(player)`            | When the user adjusted the playback speed.                                  |
+| fullscreenchange        | `(player, isFullscreen)`            | When the user entered or exited the full screen mode.   (Value of isFullscreen is True or False)                    |
+| volumechange            | `(player, volume)`            | When the user adjusted the volume.     (Value of volume is between 0 - 1)       |
+| ratechange              | `(player, playbackSpeed)`            | When the user adjusted the playback speed.     (Value of playbackSpeed is a number)                             |
 | enterpictureinpicture   | `(player)`            | When the user entered Picture-in-Picture mode.                                   |
 | leavepictureinpicture   | `(player)`            | When the user exited Picture-in-Picture mode.                                    |
 
@@ -278,31 +278,31 @@ export default {
     onFirstPlay(playerInstance) {
       this.doSomething();
     },
-    onPlay(playerInstance) {
+    onPlay(playerInstance, currentTime) {
       this.doSomething();
     },
-    onPause(playerInstance) {
+    onPause(playerInstance, currentTime) {
       this.doSomething();
     },
     onVideoEnded(playerInstance) {
       this.doSomething();
     },
-    onTimeUpdated(playerInstance) {
+    onTimeUpdated(playerInstance, currentTime) {
       this.doSomething();
     },
-    onVideoSeeked(playerInstance) {
+    onVideoSeeked(playerInstance, currentTime) {
       this.doSomething();
     },
     onPlayerWaiting(playerInstance) {
       this.doSomething();
     },
-    onToggleFullScreen(playerInstance) {
+    onToggleFullScreen(playerInstance, isFullscreen) {
       this.doSomething();
     },
-    onVolumeChange(playerInstance) {
+    onVolumeChange(playerInstance, volume) {
       this.doSomething();
     },
-    onPlaybackSpeedChanged(playerInstance) {
+    onPlaybackSpeedChanged(playerInstance, playbackSpeed) {
       this.doSomething();
     },
     onPIPEntered(playerInstance) {

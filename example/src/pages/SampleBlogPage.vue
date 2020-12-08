@@ -16,19 +16,19 @@
         This player is created with fluid layout mode, and setting aspect ratio to 16:9.
       </p>
       <ByteArkPlayerContainer
-        @ready="console.log('I\'m Ready!')"
-        @firstplay="console.log('This is the first play.')"
-        @play="console.log('You hit play.')"
-        @pause="console.log('You hit pause.')"
-        @ended="console.log('The video ended. What to watch next?')"
-        @timeupdate="console.log('Time Updated.')"
-        @seeking="console.log('You seeked the video.')"
-        @waiting="console.log('Waiting for the video...')"
-        @fullscreenchange="console.log('You toggled Full Screen Mode.')"
-        @volumechange="console.log('You adjusted the volume.')"
-        @ratechange="console.log('You adjusted the playback speed.')"
-        @enterpictureinpicture="console.log('You entered Picture-in-Picture Mode.')"
-        @leavepictureinpicture="console.log('You exited Picture-in-Picture Mode.')"
+        @ready="onPlayerReady"
+        @firstplay="onVideoFirstPlay"
+        @play="onVideoPlay"
+        @pause="onVideoPause"
+        @ended="onVideoEnded"
+        @timeupdate="onTimeChanged"
+        @seeking="onVideoSeeked"
+        @waiting="onWaitingVideo"
+        @fullscreenchange="onToggleFullScreen"
+        @volumechange="onVolumeChanged"
+        @ratechange="onPlaybackSpeedChanged"
+        @enterpictureinpicture="onPiPEntered"
+        @leavepictureinpicture="onPiPExited"
         :options="options" />
     </section>
     <section class="section-more-examples">
@@ -54,6 +54,7 @@ import ByteArkPlayerContainer from '@byteark/byteark-player-vue';
 export default {
   data() {
     return {
+      player: null,
       options: {
         fluid: true,
         autoplay: false,
@@ -68,11 +69,55 @@ export default {
       },
     };
   },
-  computed: {
-    console: () => console,
-  },
   components: {
     ByteArkPlayerContainer,
+  },
+  methods: {
+    /* eslint-disable */
+    onPlayerReady(player) {
+      this.player = player;
+      console.log('I\'m Ready!');
+    },
+    onVideoFirstPlay(player) {
+      console.log('This is the first play.');
+    },
+    onVideoPlay(player, currentTime) {
+      console.log('You hit play, Current Time (Seconds): ', currentTime);
+    },
+    onVideoPause(player, currentTime) {
+      console.log('You hit pause, Current Time (Seconds): ', currentTime);
+    },
+    onTimeChanged(player, currentTime) {
+      console.log('Time Updated, Current Time (Seconds): ', currentTime);
+    },
+    onVideoEnded(player) {
+      console.log('The video ended. What to watch next?');
+    },
+    onVideoSeeked(player, currentTime) {
+      console.log(`You seeked the video to: ${currentTime} seconds.`);
+    },
+    onWaitingVideo(player) {
+      console.log('Waiting for the video...');
+    },
+    onToggleFullScreen(player, isFullscreen) {
+      if (isFullscreen) {
+        console.log('You entered Full Screen Mode.');
+      } else {
+        console.log('You exited Full Screen Mode.');
+      }
+    },
+    onVolumeChanged(player, volume) {
+      console.log(`You adjusted the volume to ${volume}`);
+    },
+    onPlaybackSpeedChanged(player, playbackSpeed) {
+      console.log(`You adjusted the playback speed to ${playbackSpeed}`);
+    },
+    onPiPEntered(player) {
+      console.log('You entered Picture-in-Picture Mode.');
+    },
+    onPiPExited(player) {
+      console.log('You exited Picture-in-Picture Mode.');
+    },
   },
 };
 </script>

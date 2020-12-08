@@ -182,32 +182,32 @@ export default {
             this.$emit('firstplay', this.player);
             this.firstPlay = false;
           } else {
-            this.$emit('play', this.player);
+            this.$emit('play', this.player, this.player.currentTime());
           }
         });
         this.player.on('pause', () => {
           if (!this.videoEnded) {
-            this.$emit('pause', this.player);
+            this.$emit('pause', this.player, this.player.currentTime());
           }
           this.play = false;
         });
         this.player.on('timeupdate', () => {
-          this.$emit('timeupdate', this.player);
+          this.$emit('timeupdate', this.player, this.player.currentTime());
         });
         this.player.on('seeking', () => {
-          this.$emit('seeking', this.player);
+          this.$emit('seeking', this.player, this.player.currentTime());
         });
         this.player.on('waiting', () => {
           this.$emit('waiting', this.player);
         });
         this.player.on('fullscreenchange', () => {
-          this.$emit('fullscreenchange', this.player);
+          this.$emit('fullscreenchange', this.player, this.player.isFullscreen());
         });
         this.player.on('volumechange', () => {
-          this.$emit('volumechange', this.player);
+          this.$emit('volumechange', this.player, this.player.volume());
         });
         this.player.on('ratechange', () => {
-          this.$emit('ratechange', this.player);
+          this.$emit('ratechange', this.player, this.player.playbackRate());
         });
         this.player.on('enterpictureinpicture', () => {
           this.$emit('enterpictureinpicture', this.player);
