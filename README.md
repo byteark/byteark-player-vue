@@ -188,7 +188,11 @@ You can inject some behaviour directly to the ByteArk Player, and the VideoJS's 
 |----------------------|----------|-----------------------|-----------------------------------------------------------------------------|
 | onPlayerCreated      | Function | `(player)`            | Callback function to be called when a player instance is created.           |
 | onPlayerLoadingError | Function | `(originalError)`     | Callback function to be called when there's an error about loading player.  |
-| onReady              | Function | `(player)`            | Callback function to be called when a player instance is ready.             |
+| ready                | Function | `(player)`            | Callback function to be called when a player instance is ready.             |
+| firstplay            | Function | `(player)`            | Callback function to be called when the video plays for the first time.     |
+| play                 | Function | `(player)`            | Callback function to be called when the video plays or the user hit play.   |
+| pause                | Function | `(player)`            | Callback function to be called when the video plays or the user hit pause.  |
+| ended                | Function | `(player)`            | Callback function to be called when the video ended.                        |
 
 ## Advanced Props
 
@@ -209,7 +213,11 @@ or using the player instance that sent from `onReady` callback.
 ```vue
 <template>
   <ByteArkPlayerContainer
-    @onReady="onReady"
+    @ready="onReady"
+    @firstplay="onFirstPlay"
+    @play="onPlay"
+    @pause="onPause"
+    @ended="onVideoEnded"
     :options="playerOptions" />
   <button @click.stop="playerInstance.play()">Play</button>
   <button @click.stop="playerInstance.pause()">Pause</button>
@@ -238,8 +246,24 @@ export default {
     };
   },
   methods: {
+    doSomething() {
+      // Do something...
+    },
     onReady(newPlayerInstance) {
       this.playerInstance = newPlayerInstance;
+      this.doSomething();
+    },
+    onFirstPlay(playerInstance) {
+      this.doSomething();
+    },
+    onPlay(playerInstance) {
+      this.doSomething();
+    },
+    onPause(playerInstance) {
+      this.doSomething();
+    },
+    onVideoEnded(playerInstance) {
+      this.doSomething();
     },
   },
 };
@@ -252,7 +276,7 @@ export default {
 ```vue
 <template>
   <ByteArkPlayerContainer
-    @onReady="onReady"
+    @ready="onReady"
     :options="playerOptions" />
 </template>
 
@@ -292,7 +316,7 @@ export default {
 ```vue
 <template>
   <ByteArkPlayerContainer
-    @onReady="onReady"
+    @ready="onReady"
     :options="playerOptions" />
 </template>
 
