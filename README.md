@@ -182,7 +182,7 @@ To provide multiple version of sources, you can use array of source objects.
 
 ## Event Handling
 
-ByteArk player emits events that you can use to trigger your custom functions.
+ByteArk Player emits events that you can use to trigger your custom functions.
 
 | Event Name              | Callback Parameters   | Trigger Condition                                                           |
 |-------------------------|-----------------------|-----------------------------------------------------------------------------|
@@ -192,7 +192,7 @@ ByteArk player emits events that you can use to trigger your custom functions.
 | firstplay               | `(player)`            | When the video played for the first time.                                   |
 | play                    | `(player)`            | When the video played or the user hit play.                                 |
 | pause                   | `(player)`            | When the video played or the user hit pause.                                |
-| ended*                  | `(player)`            | When the video ended.                                                       |
+| ended⁕                  | `(player)`            | When the video ended.                                                       |
 | timeupdate              | `(player)`            | When the current playback time changed.                                     |
 | seeking                 | `(player)`            | When the the user seeked the video.                                         |
 | waiting                 | `(player)`            | When the player is waiting for the video.                                   |
@@ -201,6 +201,11 @@ ByteArk player emits events that you can use to trigger your custom functions.
 | ratechange              | `(player)`            | When the user adjusted the playback speed.                                  |
 | enterpictureinpicture   | `(player)`            | When the entered Picture-in-Picture mode.                                   |
 | leavepictureinpicture   | `(player)`            | When the exited Picture-in-Picture mode.                                    |
+
+⁕ You are reminded that [HTML5 video element fires a pause event whenever the playback stops](https://www.w3.org/2010/05/video/mediaevents.html)
+, including at the end of the content.
+  
+For an example of implementing these events, please see [Controlling Players Section](#controlling-players).
 
 ## Advanced Props
 
