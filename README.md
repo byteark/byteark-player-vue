@@ -10,7 +10,7 @@ Table of Contents
   - [Usage](#usage)
   - [Options prop](#options-prop)
     - [Source Object](#source-object)
-  - [Callback Props](#callback-props)
+  - [Event Handling](#event-handling)
   - [Advanced Props](#advanced-props)
   - [Advance Usages](#advance-usages)
     - [Controlling Players](#controlling-players)
