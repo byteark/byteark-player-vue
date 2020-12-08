@@ -822,10 +822,8 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@byteark/byteark-player-vue@^1.0.0-beta19":
-  version "1.0.0-beta19"
-  resolved "https://registry.yarnpkg.com/@byteark/byteark-player-vue/-/byteark-player-vue-1.0.0-beta19.tgz#3d812122d6251af704b1ff9b389746c4cef4f839"
-  integrity sha512-FvBrxkZDlgQBIJkLfVPTh+YiPgi09kWcEdnL/zm471MGVIBPNXJ/AysG6oCVXFakBRILwRpGLip3SvvIGADEVQ==
+"@byteark/byteark-player-vue@file:..":
+  version "1.0.0-beta20"
   dependencies:
     core-js "^3.6.5"
 
@@ -4290,9 +4288,9 @@ hex-color-regex@^1.1.0:
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
 highlight.js@^9.6.0:
-  version "9.18.1"
-  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.1.tgz#ed21aa001fe6252bb10a3d76d47573c6539fe13c"
-  integrity sha512-OrVKYz70LHsnCgmbXctv/bfuvntIKDz177h0Co37DQ5jamGZLVmoCVMtjMtNZY3X9DrCcKfklHPNeA0uPZhSJg==
+  version "9.18.5"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.5.tgz#d18a359867f378c138d6819edfc2a8acd5f29825"
+  integrity sha512-a5bFyofd/BHCX52/8i8uJkjr9DYwXIPnM/plwI6W7ezItLGqzt7X2G2nXuYSfsIJdkwwj/g9DG1LkcGJI/dDoA==
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
