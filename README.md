@@ -202,8 +202,7 @@ ByteArk Player emits events that you can use to trigger your custom functions.
 | enterpictureinpicture   | `(player)`            | When the entered Picture-in-Picture mode.                                   |
 | leavepictureinpicture   | `(player)`            | When the exited Picture-in-Picture mode.                                    |
 
-⁕ You are reminded that [HTML5 video element fires a pause event whenever the playback stops](https://www.w3.org/2010/05/video/mediaevents.html)
-, including at the end of the content.
+⁕ You are reminded that [HTML5 video element fires a pause event whenever the playback stops](https://www.w3.org/2010/05/video/mediaevents.html), including at the end of the content.
   
 For an example of implementing these events, please see [Controlling Players Section](#controlling-players).
 
