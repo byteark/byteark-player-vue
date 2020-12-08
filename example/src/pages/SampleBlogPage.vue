@@ -82,13 +82,13 @@ export default {
       console.log('This is the first play.');
     },
     onVideoPlay(player, currentTime) {
-      console.log('You hit play, Current Time (Seconds): ', currentTime);
+      console.log(`You hit play, Current Time: ${currentTime} seconds.`);
     },
     onVideoPause(player, currentTime) {
-      console.log('You hit pause, Current Time (Seconds): ', currentTime);
+      console.log(`You hit pause, Current Time: ${currentTime} seconds.`);
     },
     onTimeChanged(player, currentTime) {
-      console.log('Time Updated, Current Time (Seconds): ', currentTime);
+      console.log(`Time Updated, , Current Time: ${currentTime} seconds.`);
     },
     onVideoEnded(player) {
       console.log('The video ended. What to watch next?');
@@ -110,7 +110,7 @@ export default {
       console.log(`You adjusted the volume to ${volume}`);
     },
     onPlaybackSpeedChanged(player, playbackSpeed) {
-      console.log(`You adjusted the playback speed to ${playbackSpeed}`);
+      console.log(`You adjusted the playback speed to ${playbackSpeed}x`);
     },
     onPiPEntered(player) {
       console.log('You entered Picture-in-Picture Mode.');

@@ -90,6 +90,36 @@ export default {
       videoNode: null,
     };
   },
+  computed: {
+    hasPlayListener() {
+      return this.$listeners && this.$listeners.play;
+    },
+    hasPauseListener() {
+      return this.$listeners && this.$listeners.pause;
+    },
+    hasSeekListener() {
+      return this.$listeners && this.$listeners.seeking;
+    },
+    hasEndedListener() {
+      return this.$listeners && this.$listeners.ended;
+    },
+    hasTimeUpdateListener() {
+      return this.$listeners && this.$listeners.timeupdate;
+    },
+    hasFullScreenListener() {
+      return this.$listeners && this.$listeners.fullscreenchange;
+    },
+    hasVolumeListener() {
+      return this.$listeners && this.$listeners.volumechange;
+    },
+    hasRateListener() {
+      return this.$listeners && this.$listeners.ratechange;
+    },
+    hasPiPListeners() {
+      return this.$listeners
+        && (this.$listeners.enterpictureinpicture || this.$listeners.leavepictureinpicture);
+    },
+  },
   watch: {
     async options(newValue) {
       this.options = newValue;
@@ -171,50 +201,67 @@ export default {
       if (this.player) {
         this.playerState.ready = true;
         this.playerState.loaded = true;
-        // this.player.on('ended', this.$emit('ended', this.player));
-        this.player.on('ended', () => {
-          this.videoEnded = true;
-          this.$emit('ended', this.player);
-        });
-        this.player.on('play', () => {
-          this.play = true;
-          if (this.firstPlay) {
-            this.$emit('firstplay', this.player);
-            this.firstPlay = false;
-          } else {
-            this.$emit('play', this.player, this.player.currentTime());
-          }
-        });
-        this.player.on('pause', () => {
-          if (!this.videoEnded) {
-            this.$emit('pause', this.player, this.player.currentTime());
-          }
-          this.play = false;
-        });
-        this.player.on('timeupdate', () => {
-          this.$emit('timeupdate', this.player, this.player.currentTime());
-        });
-        this.player.on('seeking', () => {
-          this.$emit('seeking', this.player, this.player.currentTime());
-        });
         this.player.on('waiting', () => {
           this.$emit('waiting', this.player);
         });
-        this.player.on('fullscreenchange', () => {
-          this.$emit('fullscreenchange', this.player, this.player.isFullscreen());
-        });
-        this.player.on('volumechange', () => {
-          this.$emit('volumechange', this.player, this.player.volume());
-        });
-        this.player.on('ratechange', () => {
-          this.$emit('ratechange', this.player, this.player.playbackRate());
-        });
-        this.player.on('enterpictureinpicture', () => {
-          this.$emit('enterpictureinpicture', this.player);
-        });
-        this.player.on('leavepictureinpicture', () => {
-          this.$emit('leavepictureinpicture', this.player);
-        });
+        if (this.hasEndedListener) {
+          this.player.on('ended', () => {
+            this.videoEnded = true;
+            this.$emit('ended', this.player);
+          });
+        }
+        if (this.hasPlayListener) {
+          this.player.on('play', () => {
+            this.play = true;
+            if (this.firstPlay) {
+              this.$emit('firstplay', this.player);
+              this.firstPlay = false;
+            } else {
+              this.$emit('play', this.player, this.player.currentTime());
+            }
+          });
+        }
+        if (this.hasPauseListener) {
+          this.player.on('pause', () => {
+            if (!this.videoEnded) {
+              this.$emit('pause', this.player, this.player.currentTime());
+            }
+            this.play = false;
+          });
+        }
+        if (this.hasTimeUpdateListener) {
+          this.player.on('timeupdate', () => {
+            this.$emit('timeupdate', this.player, this.player.currentTime());
+          });
+        }
+        if (this.hasSeekListener) {
+          this.player.on('seeking', () => {
+            this.$emit('seeking', this.player, this.player.currentTime());
+          });
+        }
+        if (this.hasFullScreenListener) {
+          this.player.on('fullscreenchange', () => {
+            this.$emit('fullscreenchange', this.player, this.player.isFullscreen());
+          });
+        }
+        if (this.hasVolumeListener) {
+          this.player.on('volumechange', () => {
+            this.$emit('volumechange', this.player, this.player.volume());
+          });
+        }
+        if (this.hasRateListener) {
+          this.player.on('ratechange', () => {
+            this.$emit('ratechange', this.player, this.player.playbackRate());
+          });
+        }
+        if (this.hasPiPListeners) {
+          this.player.on('enterpictureinpicture', () => {
+            this.$emit('enterpictureinpicture', this.player);
+          });
+          this.player.on('leavepictureinpicture', () => {
+            this.$emit('leavepictureinpicture', this.player);
+          });
+        }
       }
       this.$emit('created', this.player);
     },
