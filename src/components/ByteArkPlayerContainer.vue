@@ -1,17 +1,15 @@
 <template>
   <div
-    :style="`${fill ? 'height: 100%' : ''}`"
+    :class="{'fill-layout': isFillLayout}"
     class="byteark-player-container">
     <PlayerPlaceholder
-      v-if="!playerState.loaded"
-      :class="customClass"
-      :aspectRatio="aspectRatio"
-      :error="playerState.error"
-      :fill="fill"
-      :fluid="fluid" />
+      v-if="!playerState.error"
+      :options="defaultOptions" />
+    <ErrorMessageContainer
+      v-if="playerState.error"
+      :error="playerState.error"/>
     <div
       v-if="renderComponent && !playerState.error && playerState.loaded"
-      :class="{'container-fill' : fill}"
       class="player-container">
       <audio
         v-if="audioOnlyMode"
@@ -28,6 +26,7 @@
 </template>
 
 <script>
+import ErrorMessageContainer from './ErrorMessageContainer.vue';
 import PlayerPlaceholder from './PlayerPlaceholder.vue';
 import loadScriptOrStyle from '../helpers/loadScriptOrStyle';
 
@@ -58,36 +57,39 @@ export default {
     },
   },
   components: {
+    ErrorMessageContainer,
     PlayerPlaceholder,
   },
   data() {
     return {
-      aspectRatio: '16:9',
       audioOnlyMode: false,
-      autoplay: true,
-      controls: true,
-      fill: false,
-      fluid: true,
-      playsInLine: true,
-      poster: '',
-      sources: {},
-      playerEndpoint: 'https://byteark-sdk.cdn.byteark.com/player-core',
-      playerVersion: 'v2',
-      playerJsFileName: 'byteark-player.min.js',
-      playerCssFileName: 'byteark-player.min.css',
-      techCanOverridePoster: false,
+      videoNode: null,
+      renderComponent: true,
       player: null,
-      plugins: [],
+      play: false,
+      firstPlay: true,
+      videoEnded: false,
       playerState: {
         loaded: false,
         ready: false,
         error: null,
       },
-      renderComponent: true,
-      play: false,
-      firstPlay: true,
-      videoEnded: false,
-      videoNode: null,
+      defaultOptions: {
+        aspectRatio: '16:9',
+        autoplay: true,
+        controls: true,
+        fill: false,
+        fluid: true,
+        playsInLine: true,
+        poster: '',
+        sources: {},
+        playerEndpoint: 'https://byteark-sdk.cdn.byteark.com/player-core',
+        playerVersion: 'v2',
+        playerJsFileName: 'byteark-player.min.js',
+        playerCssFileName: 'byteark-player.min.css',
+        techCanOverridePoster: false,
+        plugins: [],
+      },
     };
   },
   computed: {
@@ -119,11 +121,16 @@ export default {
       return this.$listeners
         && (this.$listeners.enterpictureinpicture || this.$listeners.leavepictureinpicture);
     },
+    isFluidLayout() {
+      return this.defaultOptions.fluid;
+    },
+    isFillLayout() {
+      return this.defaultOptions.fill;
+    },
   },
   watch: {
-    async options(newValue) {
-      this.options = newValue;
-      this.mapValues(newValue);
+    async options() {
+      this.overrideDefaultOptions();
 
       this.renderComponent = false;
       this.$nextTick(() => {
@@ -135,7 +142,7 @@ export default {
   },
   async beforeMount() {
     if (this.options) {
-      this.mapValues(this.options);
+      this.overrideDefaultOptions();
     }
     await this.initPlayerInstance();
   },
@@ -156,6 +163,21 @@ export default {
         this.play = true;
         this.$emit('firstplay', this.player);
         this.firstPlay = false;
+      }
+
+      const videoJsElement = document.querySelector('.video-js');
+
+      if (this.defaultOptions.fill) {
+        videoJsElement.classList.remove('vjs-fluid');
+        videoJsElement.classList.add('vjs-fill');
+      } else {
+        // Fluid Layout
+        if (this.defaultOptions.aspectRatio === '16:9') {
+          videoJsElement.classList.add('vjs-16-9');
+        }
+        if (this.defaultOptions.aspectRatio === '4:3') {
+          videoJsElement.classList.add('vjs-4-3');
+        }
       }
     },
     defaultOnPlayerLoaded() {
@@ -266,29 +288,22 @@ export default {
       this.$emit('created', this.player);
     },
     async loadPlayerResources() {
-      if (this.options.techCanOverridePoster) {
-        this.techCanOverridePoster = this.options.techCanOverridePoster;
-      }
       try {
         const promises = [];
-        if (this.playerJsFileName) {
-          promises.push(
-            loadScriptOrStyle(
-              `byteark-player-script-${this.playerVersion}`,
-              `${this.playerEndpoint}/${this.playerVersion}/${this.playerJsFileName}`,
-              'script',
-            ),
-          );
-        }
-        if (this.playerCssFileName) {
-          promises.push(
-            loadScriptOrStyle(
-              `byteark-player-style-${this.playerVersion}`,
-              `${this.playerEndpoint}/${this.playerVersion}/${this.playerCssFileName}`,
-              'style',
-            ),
-          );
-        }
+        promises.push(
+          loadScriptOrStyle(
+            `byteark-player-script-${this.defaultOptions.playerVersion}`,
+            `${this.defaultOptions.playerEndpoint}/${this.defaultOptions.playerVersion}/${this.defaultOptions.playerJsFileName}`,
+            'script',
+          ),
+        );
+        promises.push(
+          loadScriptOrStyle(
+            `byteark-player-style-${this.defaultOptions.playerVersion}`,
+            `${this.defaultOptions.playerEndpoint}/${this.defaultOptions.playerVersion}/${this.defaultOptions.playerCssFileName}`,
+            'style',
+          ),
+        );
         await Promise.all(promises);
       } catch (originalError) {
         this.defaultOnPlayerLoadingError(originalError);
@@ -299,7 +314,7 @@ export default {
     },
     async setupPlayer() {
       try {
-        await window.bytearkPlayer.setup(this.options, loadScriptOrStyle);
+        await window.bytearkPlayer.setup(this.defaultOptions, loadScriptOrStyle);
 
         this.defaultOnPlayerSetup();
       } catch (originalError) {
@@ -311,32 +326,17 @@ export default {
     async createPlayerInstance() {
       this.videoNode = this.$refs.videoNode;
 
-      if (this.options.poster) {
-        this.poster = this.options.poster;
-      }
-
-      if (this.options.aspectRatio) {
-        this.aspectRatio = this.options.aspectRatio;
-      }
-
-      if (this.options.sources) {
-        this.sources = this.options.sources;
-      }
-
       // check can autoplay video
-      // eslint-disable-next-line no-underscore-dangle
+      /* eslint-disable */
       const autoplayResult_ = await window.bytearkPlayer.canAutoplay(this.options);
-
-      // eslint-disable-next-line no-underscore-dangle
-      this.options.autoplayResult_ = autoplayResult_;
-
-      this.options.autoplay = autoplayResult_.autoplay;
-
-      this.options.muted = autoplayResult_.muted;
+      this.defaultOptions.autoplayResult_ = autoplayResult_;
+      this.defaultOptions.autoplay = autoplayResult_.autoplay;
+      this.defaultOptions.muted = autoplayResult_.muted;
+      /* eslint-enable */
 
       this.player = this.defaultCreatePlayerFunction(
         this.videoNode,
-        this.options,
+        this.defaultOptions,
         this.defaultOnReady,
       );
 
@@ -349,63 +349,32 @@ export default {
     defaultCreatePlayerFunction(videoNode, options, onReady) {
       return window.bytearkPlayer.init(videoNode, options, onReady);
     },
-    mapValues(newValue) {
-      this.autoplay = newValue.autoplay;
-      this.fluid = newValue.fluid;
-      this.fill = newValue.fill;
-
-      if (newValue.aspectRatio) {
-        this.aspectRatio = newValue.aspectRatio;
-      }
-
-      if (newValue.sources) {
-        this.sources = newValue.sources;
-      }
-
-      if (newValue.poster) {
-        this.poster = newValue.poster;
-      }
-
-      if (newValue.playerEndpoint) {
-        this.playerEndpoint = newValue.playerEndpoint;
-      }
-
-      if (newValue.playerVersion) {
-        this.playerVersion = newValue.playerVersion;
-      }
-
-      if (newValue.playerJsFileName) {
-        this.playerJsFileName = newValue.playerJsFileName;
-      }
-
-      if (newValue.playerCssFileName) {
-        this.playerCssFileName = newValue.playerCssFileName;
-      }
-
-      if (newValue.techCanOverridePoster) {
-        this.techCanOverridePoster = newValue.techCanOverridePoster;
-      }
-
-      if (newValue.plugins) {
-        this.plugins = newValue.plugins;
-      }
+    overrideDefaultOptions() {
+      this.defaultOptions = {
+        ...this.defaultOptions,
+        ...this.options,
+      };
     },
   },
 };
 </script>
+
 <style lang="scss">
 .byteark-player-container {
   position: relative;
   width: 100%;
-
   height: auto;
-}
-.player-container {
-  &.container-fill {
+  .player-container {
     position: relative;
     width: 100%;
     height: 100%;
+    .video-js {
+      min-width: 100%;
+      min-height: 100%;
+    }
+  }
+  &.fill-layout {
+    height: 100%;
   }
 }
-
 </style>

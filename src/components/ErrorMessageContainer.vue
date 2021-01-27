@@ -31,6 +31,8 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 16px;
+  width: 100%;
+  height: 100%;
   .primary-text {
     color: #eaeaea;
     font-weight: bold;
