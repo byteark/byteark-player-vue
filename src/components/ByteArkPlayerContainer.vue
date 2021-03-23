@@ -3,13 +3,14 @@
     :class="{'fill-layout': isFillLayout}"
     class="byteark-player-container">
     <PlayerPlaceholder
-      v-if="!playerState.error"
+      @click.native="onClickPlaceholder"
+      v-if="!renderComponent"
       :options="defaultOptions" />
     <ErrorMessageContainer
       v-if="playerState.error"
       :error="playerState.error"/>
     <div
-      v-if="renderComponent && !playerState.error && playerState.loaded"
+      v-show="renderComponent && !playerState.error && playerState.loaded"
       class="player-container">
       <audio
         v-if="audioOnlyMode"
@@ -55,6 +56,10 @@ export default {
         return {};
       },
     },
+    lazyload: {
+      type: Boolean,
+      default: () => true,
+    },
   },
   components: {
     ErrorMessageContainer,
@@ -64,7 +69,7 @@ export default {
     return {
       audioOnlyMode: false,
       videoNode: null,
-      renderComponent: true,
+      renderComponent: false,
       player: null,
       play: false,
       firstPlay: true,
@@ -132,7 +137,9 @@ export default {
     async options() {
       this.overrideDefaultOptions();
 
-      this.renderComponent = false;
+      if (!this.options) {
+        this.renderComponent = false;
+      }
       this.$nextTick(() => {
         this.renderComponent = true;
       });
@@ -144,7 +151,9 @@ export default {
     if (this.options) {
       this.overrideDefaultOptions();
     }
-    await this.initPlayerInstance();
+    if (!this.lazyload) {
+      await this.initPlayerInstance();
+    }
   },
   beforeDestroy() {
     if (this.player) {
@@ -154,6 +163,18 @@ export default {
     }
   },
   methods: {
+    async onClickPlaceholder() {
+      const placeHolder = document.querySelector('.player-place-holder');
+      if (placeHolder) {
+        placeHolder.classList.add('played');
+      }
+      if (this.lazyload) {
+        await this.initPlayerInstance();
+        if (this.player) {
+          this.player.play();
+        }
+      }
+    },
     async initPlayerInstance() {
       await this.loadPlayerResources();
       await this.setupPlayer();
@@ -220,6 +241,7 @@ export default {
       }
     },
     defaultOnPlayerCreated() {
+      this.renderComponent = true;
       if (this.player) {
         this.playerState.ready = true;
         this.playerState.loaded = true;
