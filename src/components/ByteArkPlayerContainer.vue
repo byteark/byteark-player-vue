@@ -58,7 +58,7 @@ export default {
     },
     lazyload: {
       type: Boolean,
-      default: () => true,
+      default: () => false,
     },
   },
   components: {
@@ -153,6 +153,10 @@ export default {
     }
     if (!this.lazyload) {
       await this.initPlayerInstance();
+      const placeHolder = document.querySelector('.player-place-holder');
+      if (placeHolder) {
+        placeHolder.classList.add('played');
+      }
     }
   },
   beforeDestroy() {
