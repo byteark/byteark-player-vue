@@ -12,7 +12,7 @@ Table of Contents
     - [Source Object](#source-object)
   - [Event Handling](#event-handling)
   - [Advanced Props](#advanced-props)
-  - [Advance Usages](#advance-usages)
+  - [Advanced Usages](#advanced-usages)
     - [Controlling Players](#controlling-players)
     - [Using VideoJS Plugins](#using-videojs-plugins)
     - [Request Media/Encryption with credentials](#request-mediaencryption-with-credentials)
@@ -130,9 +130,7 @@ export default {
 
 ## Options prop
 
-You have to pass options into `ByteArkPlayerContainer` 
-
-Additional properties will be passed to the player.
+You have to pass `options` object to `ByteArkPlayerContainer` 
 
 | Name         | Type         | Default | Description                                                                  |
 |--------------|--------------|---------|------------------------------------------------------------------------------|
@@ -150,6 +148,7 @@ Additional properties will be passed to the player.
 | preload      | String       | -       | Preload the video before playing. (none / metadata / auto)                   |
 | responsive   | Boolean      | -       | Auto show/hide controls depending on the screen size.                        |
 | sources      | Object/Array | -       | Source of videos (See [Source Object](#source-object))                       |
+| seekButtons  | Boolean      | false   | Show 10 seconds seek buttons and allow double-tap to seek on mobile.         |
 | volume       | Number       | -       | Video's volume between 0 and 1.                                              |
 | plugins      | Array        | -       | Videojs's plugins                                                            |
 
@@ -184,23 +183,23 @@ To provide multiple version of sources, you can use array of source objects.
 
 ByteArk Player emits events that you can use to trigger your custom functions.
 
-| Event Name              | Callback Parameters   | Trigger Condition                                                           |
-|-------------------------|-----------------------|-----------------------------------------------------------------------------|
-| created                 | `(player)`            | When the player instance was created.                                       |
-| error                   | `(originalError)`     | When there was an error while loading player.                               |
-| ready                   | `(player)`            | When the player instance was ready to play.                                 |
-| firstplay               | `(player)`            | When the video played for the first time.                                   |
-| play                    | `(player, currentTime)`            | When the video played or the user hit play.      (Value of currentTime is a number in seconds)                           |
-| pause                   | `(player, currentTime)`            | When the video played or the user hit pause.     (Value of currentTime is a number in seconds)                           |
-| ended⁕                  | `(player)`            | When the video ended.                                                       |
-| timeupdate              | `(player, currentTime)`            | When the current playback time changed.           (Value of currentTime is a number in seconds)                          |
-| seeking                 | `(player, currentTime)`            | When the the user seeked the video.               (Value of currentTime is a number in seconds)                          |
-| waiting                 | `(player)`            | When the player is waiting for the video.                                   |
-| fullscreenchange        | `(player, isFullscreen)`            | When the user entered or exited the full screen mode.   (Value of isFullscreen is True or False)                    |
-| volumechange            | `(player, volume)`            | When the user adjusted the volume.     (Value of volume is between 0 - 1)       |
-| ratechange              | `(player, playbackSpeed)`            | When the user adjusted the playback speed.     (Value of playbackSpeed is a number)                             |
-| enterpictureinpicture   | `(player)`            | When the user entered Picture-in-Picture mode.                                   |
-| leavepictureinpicture   | `(player)`            | When the user exited Picture-in-Picture mode.                                    |
+| Event Name              | Callback Parameters               | Trigger Condition                                                           |
+|-------------------------|-----------------------------------|-----------------------------------------------------------------------------|
+| created                 | `(player)`                        | When the player instance was created.                                       |
+| error                   | `(originalError)`                 | When there was an error while loading player.                               |
+| ready                   | `(player)`                        | When the player instance was ready to play.                                 |
+| firstplay               | `(player)`                        | When the video played for the first time.                                   |
+| play                    | `(player, currentTime)`           | When the video played or the user hit play.      (Value of currentTime is a number in seconds) |
+| pause                   | `(player, currentTime)`           | When the video played or the user hit pause.     (Value of currentTime is a number in seconds) |
+| ended⁕                  | `(player)`                        | When the video ended.                                                       |
+| timeupdate              | `(player, currentTime)`           | When the current playback time changed.          (Value of currentTime is a number in seconds) |
+| seeking                 | `(player, currentTime)`           | When the the user seeked the video.              (Value of currentTime is a number in seconds) |
+| waiting                 | `(player)`                        | When the player is waiting for the video.                                   |
+| fullscreenchange        | `(player, isFullscreen)`          | When the user entered or exited the full screen mode.   (Value of isFullscreen is True or False) |
+| volumechange            | `(player, volume)`                | When the user adjusted the volume.     (Value of volume is between 0 - 1)       |
+| ratechange              | `(player, playbackSpeed)`         | When the user adjusted the playback speed.     (Value of playbackSpeed is a number)  |
+| enterpictureinpicture   | `(player)`                        | When the user entered Picture-in-Picture mode.                                   |
+| leavepictureinpicture   | `(player)`                        | When the user exited Picture-in-Picture mode.                                    |
 
 ⁕ You are reminded that [HTML5 video element fires a pause event whenever the playback stops](https://www.w3.org/2010/05/video/mediaevents.html), including at the end of the content.
   
@@ -208,16 +207,23 @@ For an example of implementing these events, please see [Controlling Players Sec
 
 ## Advanced Props
 
-We also provide some ways to custom the appearance of the video placeholder,
-and some advanced behaviours.
+We also provide ways to customize the player functions and behaviours by passing the following props to the player.
 
 | Name                      | Type     | Description                                                                     |
 |---------------------------|----------|---------------------------------------------------------------------------------|
 | createPlayerFunction      | Function | Custom video instance. This function should return a VideoJS's player instance. |
+| lazyload                  | Boolean  | The player loads its asset files once it got rendered on the webpage. By passing this prop, the player then loads its asset files once the user clicked on the player instead. |
 | onPlayerSetup             | Function | Inject your custom functions before creating a player instance.                 |
 | onPlayerSetupError        | Function | Inject your custom functions when there was an error during the setup.          |
 
-## Advance Usages
+```vue
+<template>
+  <ByteArkPlayerContainer
+    :options="options"
+    lazyload />
+</template>
+```
+## Advanced Usages
 
 ### Controlling Players
 
