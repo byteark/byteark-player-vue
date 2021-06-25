@@ -58,13 +58,13 @@ export default {
     width: 90px;
     top: 50%;
     left: 50%;
-    margin-top: -2.75em;
-    margin-left: -2.75em;
+    margin-top: -3.2em;
+    margin-left: -3.2em;
     background: rgba(0, 0, 0, 0.7);
     border-radius: 50%;
     path {
       fill: #FFF;
-      transform: translateX(13px) translateY(9px) scale(0.7);
+      transform: translateX(13px) translateY(10px) scale(0.69);
     }
   }
 }

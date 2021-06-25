@@ -243,6 +243,10 @@ export default {
           this.isPlaceholderShowing = false; // Hides a placeholder
         }
 
+        if (this.options && !this.options.poster) {
+          this.isPlaceholderShowing = false;
+        }
+
         this.player.on('waiting', () => {
           this.$emit('waiting', this.player);
         });
