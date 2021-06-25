@@ -3,7 +3,7 @@
     :class="{'fluid': isFluidLayout}"
     class="player-place-holder"
     :style="customStyle">
-    <svg class="play-icon" width="90" viewBox="0 0 60 60">
+    <svg v-show="options.poster" class="play-icon" width="90" viewBox="0 0 60 60">
       <path d="M47.43,27.26,14.11,5.87A3.34,3.34,0,0,0,9,8.79V51.56a3.34,3.34,0,0,0,5.11,2.91L47.43,33.09A3.49,3.49,0,0,0,47.43,27.26Z"/>
     </svg>
   </div>
@@ -58,8 +58,8 @@ export default {
     width: 90px;
     top: 50%;
     left: 50%;
-    margin-top: -3.2em;
-    margin-left: -3.2em;
+    margin-top: -2.74em;
+    margin-left: -2.74em;
     background: rgba(0, 0, 0, 0.7);
     border-radius: 50%;
     path {
