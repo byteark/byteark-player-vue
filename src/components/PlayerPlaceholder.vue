@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import PlayIcon from '../icons/ByteArkPlayer-Play.svg';
 import calculatePlaceholderPaddingTopFromAspectRatio from '../helpers/styleCalculator';
 
 export default {
@@ -23,11 +22,6 @@ export default {
       type: Object,
       default: () => null,
     },
-  },
-  data() {
-    return {
-      PlayIcon,
-    };
   },
   computed: {
     isFluidLayout() {
@@ -57,9 +51,6 @@ export default {
   cursor: pointer;
   &.fluid {
     height: 100%;
-  }
-  &.played {
-    position: absolute;
   }
 
   .play-icon {

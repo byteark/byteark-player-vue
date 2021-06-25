@@ -4,13 +4,13 @@
     class="byteark-player-container">
     <PlayerPlaceholder
       @click.native="onClickPlaceholder"
-      v-if="!renderComponent"
+      v-show="isPlaceholderShowing"
       :options="defaultOptions" />
     <ErrorMessageContainer
       v-if="playerState.error"
       :error="playerState.error"/>
     <div
-      v-show="renderComponent && !playerState.error && playerState.loaded"
+      v-show="!isPlaceholderShowing && !playerState.error && playerState.ready"
       class="player-container">
       <audio
         v-if="audioOnlyMode"
@@ -30,6 +30,7 @@
 import ErrorMessageContainer from './ErrorMessageContainer.vue';
 import PlayerPlaceholder from './PlayerPlaceholder.vue';
 import loadScriptOrStyle from '../helpers/loadScriptOrStyle';
+import updatePlayerProps from '../helpers/updatePlayerProps';
 
 export default {
   name: 'ByteArkPlayerContainer',
@@ -69,7 +70,7 @@ export default {
     return {
       audioOnlyMode: false,
       videoNode: null,
-      renderComponent: false,
+      isPlaceholderShowing: true,
       player: null,
       play: false,
       firstPlay: true,
@@ -134,61 +135,48 @@ export default {
     },
   },
   watch: {
-    async options() {
-      this.overrideDefaultOptions();
-
-      if (!this.options) {
-        this.renderComponent = false;
-      }
-      this.$nextTick(() => {
-        this.renderComponent = true;
-      });
-
-      await this.initPlayerInstance();
+    options() {
+      this.onLoadPlayerOptions();
+      updatePlayerProps(this.player, this.options);
+      this.isPlaceholderShowing = false;
     },
   },
-  async beforeMount() {
-    if (this.options) {
-      this.overrideDefaultOptions();
-    }
-    if (!this.lazyload) {
-      await this.initPlayerInstance();
-      const placeHolder = document.querySelector('.player-place-holder');
-      if (placeHolder) {
-        placeHolder.classList.add('played');
-      }
-    }
+  beforeMount() {
+    this.onLoadPlayerOptions();
   },
   beforeDestroy() {
     if (this.player) {
       this.player.dispose();
       this.playerState.ready = false;
       this.playerState.loaded = false;
+      this.isPlaceholderShowing = true;
     }
   },
   methods: {
-    async onClickPlaceholder() {
-      const placeHolder = document.querySelector('.player-place-holder');
-      if (placeHolder) {
-        placeHolder.classList.add('played');
+    async onLoadPlayerOptions() {
+      if (this.options) {
+        this.isPlaceholderShowing = true;
+        this.overrideDefaultOptions();
       }
+
+      if (!this.player && !this.lazyload) {
+        await this.initPlayerInstance();
+      }
+    },
+    async onClickPlaceholder() {
       if (this.lazyload) {
         await this.initPlayerInstance();
-        if (this.player) {
-          this.player.play();
-        }
+      }
+
+      if (this.player) {
+        this.player.play();
+        this.isPlaceholderShowing = false;
       }
     },
     async initPlayerInstance() {
       await this.loadPlayerResources();
       await this.setupPlayer();
       await this.createPlayerInstance();
-
-      if (this.autoplay) {
-        this.play = true;
-        this.$emit('firstplay', this.player);
-        this.firstPlay = false;
-      }
 
       const videoJsElement = document.querySelector('.video-js');
 
@@ -245,10 +233,16 @@ export default {
       }
     },
     defaultOnPlayerCreated() {
-      this.renderComponent = true;
       if (this.player) {
         this.playerState.ready = true;
-        this.playerState.loaded = true;
+
+        if (this.options && this.options.autoplay) {
+          this.play = true; // Plays
+          this.$emit('firstplay', this.player); // Emits firstplay event.
+          this.firstPlay = false; // Sets firstplay to false after emitting.
+          this.isPlaceholderShowing = false; // Hides a placeholder
+        }
+
         this.player.on('waiting', () => {
           this.$emit('waiting', this.player);
         });
