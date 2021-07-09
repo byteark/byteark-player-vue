@@ -7,6 +7,7 @@ Table of Contents
   - [Demo](#demo)
   - [Features](#features)
   - [Installation](#installation)
+  - [Compatibility](#compatibility)
   - [Usage](#usage)
   - [Options prop](#options-prop)
     - [Source Object](#source-object)
@@ -29,6 +30,16 @@ You can try on [the demo page](https://byteark.github.io/byteark-player-vue/).
 * Controls basic behaviours via props.
 * Custom advanced callbacks to access ByteArk Player/VideoJS instance directly.
 
+## Compatibility
+
+Since Vue 3 is not backward compatible, please make sure to install the correct ByteArk Player Container version based on your Vue version.
+
+| Vue Version | Package Version |
+|-------------|-----------------|
+| 2.x         | 1.x             |
+| 3.x         | 2.x             |
+
+
 ## Installation
 
 This library is distributed via NPM. You may install from NPM or Yarn.
@@ -42,7 +53,7 @@ yarn add @byteark/byteark-player-vue
 
 ## Usage
 
-Include and register `ByteArkPlayerContainer` in your project.
+1. Include and register `ByteArkPlayerContainer` in your project.
 
 ```vue
 <template>
@@ -79,7 +90,7 @@ export default {
 </script>
 ```
 
-Include stylesheet in your project
+2. Include stylesheet in your project
 
 ```vue
 // Inside your main SCSS file
@@ -91,46 +102,17 @@ Include stylesheet in your project
 </style>
 ```
 
-Use `fill` mode if you want the video to be displayed on a fixed-size container.
-
-```vue
-<template>
-  <ByteArkPlayerContainer
-    :options="playerOptions" />
-</template>
-
-<script>
-import ByteArkPlayerContainer from '@byteark/byteark-player-vue';
-
-export default {
-  components: {
-    ByteArkPlayerContainer,
-  },
-  data() {
-    return {
-      playerOptions: {
-        autoplay: true,
-        fill: true,
-        aspectRatio: '16:9',
-        poster: 'https://qoder.byteark.com/images/video-frames/1/GU/cg/1GUcgd3XwsmD-large.jpg',
-        sources: {
-          src: 'https://video.example.com/path/to/video/playlist.m3u8',
-          type: 'application/x-mpegURL',
-          // Optional
-          title: 'Video Title',
-          videoId: 'RI2PimuHxDXw',
-          poster: 'https://qoder.byteark.com/images/video-frames/1/GU/cg/1GUcgd3XwsmD-large.jpg',
-        },
-      },
-    };
-  },
-};
-</script>
+In case that you want to display videos inside a fix-sized container, use fill layout mode by passing `fill: true` in the player options.
+```
+playerOptions: {
+  ...options,
+  fill: true,
+},
 ```
 
 ## Options prop
 
-You have to pass `options` object to `ByteArkPlayerContainer` 
+You have to pass `options` object to `ByteArkPlayerContainer`
 
 | Name         | Type         | Default | Description                                                                  |
 |--------------|--------------|---------|------------------------------------------------------------------------------|
@@ -202,7 +184,7 @@ ByteArk Player emits events that you can use to trigger your custom functions.
 | leavepictureinpicture   | `(player)`                        | When the user exited Picture-in-Picture mode.                                    |
 
 ⁕ You are reminded that [HTML5 video element fires a pause event whenever the playback stops](https://www.w3.org/2010/05/video/mediaevents.html), including at the end of the content.
-  
+
 For an example of implementing these events, please see [Controlling Players Section](#controlling-players).
 
 ## Advanced Props
@@ -368,8 +350,8 @@ export default {
 ```vue
 <template>
   <ByteArkPlayerContainer
-    @ready="onReady"
-    :options="playerOptions" />
+          @ready="onReady"
+          :options="playerOptions" />
 </template>
 
 <script>
