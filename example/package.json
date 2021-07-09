@@ -5,10 +5,9 @@
   "private": true,
   "dependencies": {
     "@byteark/byteark-player-vue": "file:..",
-    "bootstrap": "^4.5.3",
     "core-js": "file:../node_modules/core-js",
     "vue": "file:../node_modules/vue",
-    "vue-router": "^3.5.2"
+    "vue-router": "^4.0.10"
   },
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -24,9 +23,9 @@
     "@vue/cli-plugin-babel": "file:../node_modules/@vue/cli-plugin-babel",
     "@vue/cli-plugin-router": "~4.5.13",
     "@vue/cli-service": "file:../node_modules/@vue/cli-service",
+    "@vue/compiler-sfc": "file:../node_modules/@vue/compiler-sfc",
     "node-sass": "file:../node_modules/node-sass",
-    "sass-loader": "file:../node_modules/sass-loader",
-    "vue-template-compiler": "file:../node_modules/vue-template-compiler"
+    "sass-loader": "file:../node_modules/sass-loader"
   },
   "resolutions": {
     "ssri": "^8.0.1",

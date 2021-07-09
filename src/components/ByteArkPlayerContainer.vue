@@ -144,7 +144,7 @@ export default {
   beforeMount() {
     this.onLoadPlayerOptions();
   },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.player) {
       this.player.dispose();
       this.playerState.ready = false;
@@ -177,21 +177,6 @@ export default {
       await this.loadPlayerResources();
       await this.setupPlayer();
       await this.createPlayerInstance();
-
-      const videoJsElement = document.querySelector('.video-js');
-
-      if (this.defaultOptions.fill) {
-        videoJsElement.classList.remove('vjs-fluid');
-        videoJsElement.classList.add('vjs-fill');
-      } else {
-        // Fluid Layout
-        if (this.defaultOptions.aspectRatio === '16:9') {
-          videoJsElement.classList.add('vjs-16-9');
-        }
-        if (this.defaultOptions.aspectRatio === '4:3') {
-          videoJsElement.classList.add('vjs-4-3');
-        }
-      }
     },
     defaultOnPlayerLoaded() {
       try {

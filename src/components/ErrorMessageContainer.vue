@@ -1,6 +1,6 @@
 <template>
   <div class="error-message-container">
-    <div>
+    <div class="error-group">
       <p class="primary-text">{{error.message}}</p>
       <p class="secondary-text">{{error.messageSecondary}}</p>
       <p class="error-text">{{error.code}}</p>
