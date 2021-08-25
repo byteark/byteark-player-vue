@@ -1,6 +1,6 @@
 {
   "name": "@byteark/byteark-player-vue",
-  "version": "2.0.0-beta2",
+  "version": "2.0.0-beta3",
   "main": "dist/@byteark/byteark-player-vue.umd.js",
   "description": "ByteArk Player Container for Vue.js",
   "author": "byteark",
@@ -10,12 +10,13 @@
     "url": "git+https://github.com/byteark/byteark-player-vue.git"
   },
   "scripts": {
-    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "make": "vue-cli-service build --target lib --name @byteark/byteark-player-vue ./src/main.js",
+    "deploy": "gh-pages -d example/dist",
     "lint": "vue-cli-service lint",
+    "make": "vue-cli-service build --target lib --name @byteark/byteark-player-vue ./src/main.js",
     "predeploy": "cd example && yarn install && yarn build",
-    "deploy": "gh-pages -d example/dist"
+    "prepublish": "yarn make",
+    "serve": "vue-cli-service serve"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.13",
