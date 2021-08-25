@@ -1,7 +1,9 @@
 const path = require('path');
 
 module.exports = {
-  publicPath: '/byteark-player-vue/',
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/byteark-player-vue/'
+    : '/',
   configureWebpack: {
     resolve: {
       symlinks: false,
