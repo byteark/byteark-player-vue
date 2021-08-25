@@ -9,10 +9,6 @@ export default {};
 </script>
 
 <style lang="scss">
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
-@import '~bootstrap/scss/mixins';
-@import '~bootstrap/scss/bootstrap';
 @import '~@byteark/byteark-player-vue/dist/@byteark/byteark-player-vue.css';
 
 body {

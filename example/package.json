@@ -5,7 +5,6 @@
   "private": true,
   "dependencies": {
     "@byteark/byteark-player-vue": "file:..",
-    "bootstrap": "^4.5.3",
     "core-js": "file:../node_modules/core-js",
     "vue": "file:../node_modules/vue",
     "vue-router": "^3.5.2"

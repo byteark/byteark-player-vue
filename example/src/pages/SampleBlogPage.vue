@@ -127,7 +127,7 @@ export default {
   padding: 60px 0;
   .heading {
     text-align: center;
-    padding: 8vh 0;
+    padding: 4vh 0;
   }
   section {
     margin: 20px 0;
