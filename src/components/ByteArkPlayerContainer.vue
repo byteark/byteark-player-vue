@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { isBrowserSupportDrm } from '@/helpers/drm.js';
+import { isBrowserSupportDrm } from '@/helpers/drm';
 import ErrorMessageContainer from './ErrorMessageContainer.vue';
 import PlayerPlaceholder from './PlayerPlaceholder.vue';
 import loadScriptOrStyle from '../helpers/loadScriptOrStyle';
