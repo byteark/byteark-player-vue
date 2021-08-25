@@ -18,7 +18,7 @@ module.exports = {
     'no-mixed-spaces-and-tabs': 0,
     'import/prefer-default-export': 0,
     'consistent-return': 0,
-    'operator-linebreak': [2, 'before', { overrides: { '?': 'after' } }],
+    'operator-linebreak': 2,
     'arrow-body-style': ['off'],
     'linebreak-style': 0,
   },
