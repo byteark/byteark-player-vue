@@ -1,3 +1,4 @@
+/* eslint-disable */
 export function isBrowserSupportDrm() {
   const testKeySystems = [
     'com.widevine.alpha',

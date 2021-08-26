@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import { isBrowserSupportDrm } from '@/helpers/drm.js';
 import ErrorMessageContainer from './ErrorMessageContainer.vue';
 import PlayerPlaceholder from './PlayerPlaceholder.vue';
 import loadScriptOrStyle from '../helpers/loadScriptOrStyle';
@@ -342,8 +341,6 @@ export default {
       this.defaultOptions.autoplayResult_ = autoplayResult_;
       this.defaultOptions.autoplay = autoplayResult_.autoplay;
       this.defaultOptions.muted = autoplayResult_.muted;
-      /* eslint-enable */
-      window.bytearkPlayer.isBrowserSupportDrm = isBrowserSupportDrm;
 
       this.player = this.defaultCreatePlayerFunction(
         this.videoNode,
