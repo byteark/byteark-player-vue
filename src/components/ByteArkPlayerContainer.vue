@@ -350,14 +350,7 @@ export default {
     async createPlayerInstance() {
       this.videoNode = this.$refs.videoNode;
 
-      // check can autoplay video
-      /* eslint-disable */
-      const autoplayResult_ = await window.bytearkPlayer.canAutoplay(this.options);
-      this.defaultOptions.autoplayResult_ = autoplayResult_;
-      this.defaultOptions.autoplay = autoplayResult_.autoplay;
-      this.defaultOptions.muted = autoplayResult_.muted;
-
-      this.player = this.defaultCreatePlayerFunction(
+      this.player = await this.defaultCreatePlayerFunction(
         this.videoNode,
         this.defaultOptions,
         this.defaultOnReady,
