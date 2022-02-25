@@ -363,7 +363,7 @@ export default {
       this.videoEnded = false;
     },
     defaultCreatePlayerFunction(videoNode, options, onReady) {
-      return window.bytearkPlayer.init(videoNode, options, onReady);
+      return window.bytearkPlayer.initAsync(videoNode, options, onReady);
     },
     overrideDefaultOptions() {
       this.defaultOptions = {
