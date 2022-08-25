@@ -88,7 +88,9 @@ export default {
         fluid: true,
         playsInLine: true,
         poster: '',
+        playerSlugId: '',
         sources: {},
+        playerServerEndpoint: 'https://player.byteark.com/players',
         playerEndpoint: 'https://byteark-sdk.cdn.byteark.com/player-core',
         playerVersion: 'v2',
         playerJsFileName: 'byteark-player.min.js',
@@ -314,20 +316,37 @@ export default {
     async loadPlayerResources() {
       try {
         const promises = [];
-        promises.push(
-          loadScriptOrStyle(
-            `byteark-player-script-${this.defaultOptions.playerVersion}`,
-            `${this.defaultOptions.playerEndpoint}/${this.defaultOptions.playerVersion}/${this.defaultOptions.playerJsFileName}`,
-            'script',
-          ),
-        );
-        promises.push(
-          loadScriptOrStyle(
-            `byteark-player-style-${this.defaultOptions.playerVersion}`,
-            `${this.defaultOptions.playerEndpoint}/${this.defaultOptions.playerVersion}/${this.defaultOptions.playerCssFileName}`,
-            'style',
-          ),
-        );
+        if (this.defaultOptions.playerSlugId !== '') {
+          promises.push(
+            loadScriptOrStyle(
+              `byteark-player-script-${this.defaultOptions.playerSlugId}`,
+              `${this.defaultOptions.playerServerEndpoint}/${this.defaultOptions.playerSlugId}/libraries/${this.defaultOptions.playerJsFileName}`,
+              'script',
+            ),
+          );
+          promises.push(
+            loadScriptOrStyle(
+              `byteark-player-script-${this.defaultOptions.playerSlugId}`,
+              `${this.defaultOptions.playerServerEndpoint}/${this.defaultOptions.playerSlugId}/libraries/${this.defaultOptions.playerCssFileName}`,
+              'style',
+            ),
+          );
+        } else {
+          promises.push(
+            loadScriptOrStyle(
+              `byteark-player-script-${this.defaultOptions.playerVersion}`,
+              `${this.defaultOptions.playerEndpoint}/${this.defaultOptions.playerVersion}/${this.defaultOptions.playerJsFileName}`,
+              'script',
+            ),
+          );
+          promises.push(
+            loadScriptOrStyle(
+              `byteark-player-style-${this.defaultOptions.playerVersion}`,
+              `${this.defaultOptions.playerEndpoint}/${this.defaultOptions.playerVersion}/${this.defaultOptions.playerCssFileName}`,
+              'style',
+            ),
+          );
+        }
         await Promise.all(promises);
       } catch (originalError) {
         this.defaultOnPlayerLoadingError(originalError);
