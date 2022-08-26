@@ -125,6 +125,7 @@ You have to pass `options` object to `ByteArkPlayerContainer`
 | loop         | Boolean      | -       | Replay the video after ending                                                |
 | muted        | Boolean      | -       | Play the video without sounds.                                               |
 | playbackRate | Number       | 1.0     | Playback speed. 1.0 means original speed.                                    |
+| playerSlugId | String       | -       | SlugId of player created via api player server service                       |
 | playsinline  | Boolean      | true    | Should be true so custom controls available on all platforms, including iOS. |
 | poster       | String       | -       | Image to show before playing the video.                                      |
 | preload      | String       | -       | Preload the video before playing. (none / metadata / auto)                   |

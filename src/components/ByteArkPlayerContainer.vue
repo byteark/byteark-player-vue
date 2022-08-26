@@ -316,7 +316,7 @@ export default {
     async loadPlayerResources() {
       try {
         const promises = [];
-        if (this.defaultOptions.playerSlugId !== '') {
+        if (this.defaultOptions.playerSlugId) {
           promises.push(
             loadScriptOrStyle(
               `byteark-player-script-${this.defaultOptions.playerSlugId}`,
