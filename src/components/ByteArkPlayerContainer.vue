@@ -326,7 +326,7 @@ export default {
           );
           promises.push(
             loadScriptOrStyle(
-              `byteark-player-script-${this.defaultOptions.playerSlugId}`,
+              `byteark-player-style-${this.defaultOptions.playerSlugId}`,
               `${this.defaultOptions.playerServerEndpoint}/${this.defaultOptions.playerSlugId}/libraries/${this.defaultOptions.playerCssFileName}`,
               'style',
             ),
