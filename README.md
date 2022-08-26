@@ -134,12 +134,11 @@ You have to pass `options` object to `ByteArkPlayerContainer`
 | volume       | Number       | -       | Video's volume between 0 and 1.                                              |
 | plugins      | Array        | -       | Videojs's plugins                                                            |
 
-The following 6 properties can also be added to `options` for an advanced usage.
+The following 5 properties can also be added to `options` for an advanced usage.
 
 | Name                      | Type     | Description                                                                     |
 |---------------------------|----------|---------------------------------------------------------------------------------|
 | playerSlugId              | String   | SlugId of player created via api player server service                          |
-| playerServerEndpoint      | String   | Endpoint to the player server (without slugid part and ending slash).           |
 | playerVersion             | String   | Custom version of the player. (default: 'v1')                                   |
 | playerEndpoint            | String   | Endpoint to the video player (without version part and ending slash).           |
 | playerJsFileName          | String   | File name of player's JS. (default: 'byteark-player.min.js')                    |
