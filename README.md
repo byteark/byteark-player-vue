@@ -36,9 +36,8 @@ Since Vue 3 is not backward compatible, please make sure to install the correct 
 
 | Vue Version | Package Version |
 |-------------|-----------------|
-| 2.x         | 1.x             |
-| 3.x         | 2.x             |
-
+| 2.x         | 3.x             |
+| 3.x         | 4.x             |
 
 ## Installation
 
