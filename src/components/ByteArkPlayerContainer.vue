@@ -177,8 +177,9 @@ export default {
     },
     async initPlayerInstance() {
       await this.loadPlayerResources();
-      await this.setupPlayer();
-      await this.createPlayerInstance();
+      const resultOptions = await setupOptions();
+      await this.setupPlayer(resultOptions);
+      await this.createPlayerInstance(resultOptions);
 
       const videoJsElement = document.querySelector('.video-js');
 
@@ -355,9 +356,23 @@ export default {
       }
       this.defaultOnPlayerLoaded();
     },
-    async setupPlayer() {
+    async setupOptions() {
       try {
-        await window.bytearkPlayer.setup(this.defaultOptions, loadScriptOrStyle);
+        const autoplayResult = await window.bytearkPlayer.canAutoplay(this.defaultOptions);
+        const resultPlayerOptions = {
+          ...this.defaultOptions,
+          autoplayResult_: autoplayResult
+        };
+        return resultPlayerOptions;
+      } catch (originalError) {
+        this.defaultOnPlayerSetupError(originalError);
+        // Rethrow to stop following statements.
+        throw originalError;
+      }
+    },
+    async setupPlayer(resultOptions) {
+      try {
+        await window.bytearkPlayer.setup(resultOptions, loadScriptOrStyle);
 
         this.defaultOnPlayerSetup();
       } catch (originalError) {
@@ -366,12 +381,12 @@ export default {
         throw originalError;
       }
     },
-    async createPlayerInstance() {
+    async createPlayerInstance(resultOptions) {
       this.videoNode = this.$refs.videoNode;
 
       this.player = await this.defaultCreatePlayerFunction(
         this.videoNode,
-        this.defaultOptions,
+        resultOptions,
         this.defaultOnReady,
       );
 
