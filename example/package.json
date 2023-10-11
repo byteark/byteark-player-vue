@@ -23,7 +23,7 @@
     "@vue/cli-plugin-babel": "file:../node_modules/@vue/cli-plugin-babel",
     "@vue/cli-plugin-router": "~4.5.13",
     "@vue/cli-service": "file:../node_modules/@vue/cli-service",
-    "node-sass": "file:../node_modules/node-sass",
+    "sass": "file:../node_modules/sass",
     "sass-loader": "file:../node_modules/sass-loader",
     "vue-template-compiler": "file:../node_modules/vue-template-compiler"
   },
