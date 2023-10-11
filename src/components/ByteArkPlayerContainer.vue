@@ -177,7 +177,7 @@ export default {
     },
     async initPlayerInstance() {
       await this.loadPlayerResources();
-      const resultOptions = await setupOptions();
+      const resultOptions = await this.setupOptions();
       await this.setupPlayer(resultOptions);
       await this.createPlayerInstance(resultOptions);
 
@@ -361,7 +361,7 @@ export default {
         const autoplayResult = await window.bytearkPlayer.canAutoplay(this.defaultOptions);
         const resultPlayerOptions = {
           ...this.defaultOptions,
-          autoplayResult_: autoplayResult
+          autoplayResult_: autoplayResult,
         };
         return resultPlayerOptions;
       } catch (originalError) {
