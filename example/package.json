@@ -24,7 +24,7 @@
     "@vue/cli-plugin-router": "~4.5.13",
     "@vue/cli-service": "file:../node_modules/@vue/cli-service",
     "@vue/compiler-sfc": "file:../node_modules/@vue/compiler-sfc",
-    "node-sass": "file:../node_modules/node-sass",
+    "sass": "file:../node_modules/sass",
     "sass-loader": "file:../node_modules/sass-loader"
   },
   "resolutions": {
