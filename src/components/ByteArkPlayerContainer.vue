@@ -177,7 +177,7 @@ export default {
     },
     async initPlayerInstance() {
       await this.loadPlayerResources();
-      const resultOptions = await setupOptions();
+      const resultOptions = await this.setupOptions();
       await this.setupPlayer(resultOptions);
       await this.createPlayerInstance(resultOptions);
     },
