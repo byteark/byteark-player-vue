@@ -1,418 +1,349 @@
 <template>
-  <div
-    :class="{'fill-layout': isFillLayout}"
-    class="byteark-player-container">
-    <PlayerPlaceholder
-      @click.native="onClickPlaceholder"
-      v-show="isPlaceholderShowing"
-      :options="defaultOptions" />
-    <ErrorMessageContainer
-      v-if="playerState.error"
-      :error="playerState.error"/>
-    <div
-      v-show="!isPlaceholderShowing && !playerState.error && playerState.ready"
-      class="player-container">
-      <audio
-        v-if="audioOnlyMode"
-        ref="videoNode"
-        :class="`video-js ${customClass}`" />
-      <video
-        playsInline
-        controls
-        v-if="!audioOnlyMode"
-        ref="videoNode"
-        :class="`video-js ${customClass}`" />
+  <div style="position: relative; height: 100%">
+    <template v-if="playerContainerState.showPlaceholder">
+      <PlayerPlaceholder
+        :aspect-ratio="props.options.aspectRatio"
+        :on-click="onClickPlaceholder"
+        :custom-class="props.customClass"
+        :error="playerContainerState.error"
+        :lazyload="lazyload"
+        :loaded="playerContainerState.loaded"
+        :player-options="props.options"
+      />
+    </template>
+    <div :style="{ display: playerContainerState.showPlaceholder ? 'none' : 'initial' }">
+      <template v-if="playerContainerState.error === null">
+        <audio
+          v-if="options.audioOnlyMode"
+          ref="mediaRef"
+          :class="`video-js ${props.customClass}`"
+        />
+        <video
+          v-if="!options.audioOnlyMode"
+          ref="mediaRef"
+          playsinline
+          :class="`video-js ${props.customClass} ${
+            props.options.fluid
+              ? props.options.aspectRatio === '4:3'
+                ? 'vjs-4-3'
+                : props.options.aspectRatio === '16:9'
+                  ? 'vjs-16-9'
+                  : ''
+              : ''
+          }`"
+        />
+      </template>
     </div>
   </div>
 </template>
 
-<script>
-import ErrorMessageContainer from './ErrorMessageContainer.vue';
+<script setup lang="ts">
+import { ref, reactive, watch, onMounted, onUnmounted, toRaw } from 'vue';
 import PlayerPlaceholder from './PlayerPlaceholder.vue';
-import loadScriptOrStyle from '../helpers/loadScriptOrStyle';
-import updatePlayerProps from '../helpers/updatePlayerProps';
+import {
+  PLAYER_ENDPOINT,
+  PLAYER_SERVER_ENDPOINT,
+  PLAYER_VERSION,
+  PLAYER_JS_FILENAME,
+  PLAYER_CSS_FILENAME,
+} from '../constants';
+import {
+  updatePlayerOptions,
+  checkIfCanUseDOM,
+  loadPlayerResources,
+  setupPlayerOptions,
+  setupPlayer,
+  createPlayerInstance,
+  defaultCreatePlayerFunction,
+  defaultSetupPlayerFunction,
+  ByteArkPlayerContainerError,
+  LoadPlayerResourceError,
+  SetupPlayerOptionsError,
+  useListeners,
+} from '../utils';
+import type {
+  ByteArkPlayerContainerProps,
+  ByteArkPlayerContainerEvents,
+  ByteArkPlayerContainerState,
+  ByteArkPlayer,
+  ByteArkPlayerError,
+} from '../types';
 
-export default {
-  name: 'ByteArkPlayerContainer',
-  props: {
-    createPlayerFunction: {
-      type: Function,
-      default: () => {},
-    },
-    customClass: {
-      type: String,
-      default: () => '',
-    },
-    onPlayerSetup: {
-      type: Function,
-      default: () => {},
-    },
-    onPlayerSetupError: {
-      type: Function,
-      default: () => {},
-    },
-    options: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    lazyload: {
-      type: Boolean,
-      default: () => false,
-    },
-  },
-  components: {
-    ErrorMessageContainer,
-    PlayerPlaceholder,
-  },
-  data() {
-    return {
-      audioOnlyMode: false,
-      videoNode: null,
-      isPlaceholderShowing: true,
-      player: null,
-      play: false,
-      firstPlay: true,
-      videoEnded: false,
-      playerState: {
-        loaded: false,
-        ready: false,
-        error: null,
-      },
-      defaultOptions: {
-        aspectRatio: '16:9',
-        autoplay: true,
-        controls: true,
-        fill: false,
-        fluid: true,
-        playsInLine: true,
-        poster: '',
-        playerSlugId: '',
-        sources: {},
-        playerServerEndpoint: 'https://player.byteark.com/players',
-        playerEndpoint: 'https://byteark-sdk.cdn.byteark.com/player-core',
-        playerVersion: 'v2',
-        playerJsFileName: 'byteark-player.min.js',
-        playerCssFileName: 'byteark-player.min.css',
-        techCanOverridePoster: false,
-        plugins: [],
-      },
-    };
-  },
-  computed: {
-    hasPlayListener() {
-      return this.$listeners && this.$listeners.play;
-    },
-    hasPauseListener() {
-      return this.$listeners && this.$listeners.pause;
-    },
-    hasSeekListener() {
-      return this.$listeners && this.$listeners.seeking;
-    },
-    hasEndedListener() {
-      return this.$listeners && this.$listeners.ended;
-    },
-    hasTimeUpdateListener() {
-      return this.$listeners && this.$listeners.timeupdate;
-    },
-    hasFullScreenListener() {
-      return this.$listeners && this.$listeners.fullscreenchange;
-    },
-    hasVolumeListener() {
-      return this.$listeners && this.$listeners.volumechange;
-    },
-    hasRateListener() {
-      return this.$listeners && this.$listeners.ratechange;
-    },
-    hasPiPListeners() {
-      return this.$listeners
-        && (this.$listeners.enterpictureinpicture || this.$listeners.leavepictureinpicture);
-    },
-    isFluidLayout() {
-      return this.defaultOptions.fluid;
-    },
-    isFillLayout() {
-      return this.defaultOptions.fill;
-    },
-  },
-  watch: {
-    options() {
-      this.onLoadPlayerOptions();
-      updatePlayerProps(this.player, this.options);
-      this.isPlaceholderShowing = false;
-    },
-  },
-  beforeMount() {
-    this.onLoadPlayerOptions();
-  },
-  beforeUnmount() {
-    if (this.player) {
-      this.player.dispose();
-      this.playerState.ready = false;
-      this.playerState.loaded = false;
-      this.isPlaceholderShowing = true;
-    }
-  },
-  methods: {
-    async onLoadPlayerOptions() {
-      if (this.options) {
-        this.isPlaceholderShowing = true;
-        this.overrideDefaultOptions();
-      }
+window.bytearkPlayer = window.bytearkPlayer || {};
 
-      if (!this.player && !this.lazyload) {
-        await this.initPlayerInstance();
-      }
-    },
-    async onClickPlaceholder() {
-      if (this.lazyload) {
-        await this.initPlayerInstance();
-      }
+// define component's props
+const props = defineProps<ByteArkPlayerContainerProps>();
 
-      if (this.player) {
-        this.player.play();
-        this.isPlaceholderShowing = false;
-      }
-    },
-    async initPlayerInstance() {
-      await this.loadPlayerResources();
-      const resultOptions = await this.setupOptions();
-      await this.setupPlayer(resultOptions);
-      await this.createPlayerInstance(resultOptions);
-    },
-    defaultOnPlayerLoaded() {
-      try {
-        this.$emit('loaded', this.player);
-      } catch (error) {
-        this.playerState.error = error;
-      }
-    },
-    defaultOnPlayerLoadingError(originalError) {
-      this.playerState.error = {
-        error: {
-          code: 'ERROR_BYTEARK_PLAYER_VUE_100001',
-          message: 'Sorry, something went wrong when loading the video player.',
-          messageSecondary: 'Please refresh the page to try again.',
-        },
-        originalError,
-      };
-      this.$emit('error', originalError);
-    },
-    defaultOnPlayerSetup() {
-      this.playerState.loaded = true;
+// define component's events
+const emit = defineEmits<ByteArkPlayerContainerEvents>();
 
-      if (this.onPlayerSetup) {
-        this.onPlayerSetup();
-      }
-    },
-    defaultOnPlayerSetupError(originalError) {
-      if (this.onPlayerSetupError) {
-        this.onPlayerSetupError(originalError);
-      } else {
-        this.playerState.error = {
-          error: {
-            code: 'ERROR_BYTEARK_PLAYER_VUE_100001',
-            message: 'Sorry, something went wrong when loading the video player.',
-            messageSecondary: 'Please refresh the page to try again.',
-          },
-          originalError,
-        };
-      }
-    },
-    defaultOnPlayerCreated() {
-      if (this.player) {
-        this.playerState.ready = true;
+const {
+  createPlayerFunction = defaultCreatePlayerFunction,
+  lazyload = false,
+  playerEndpoint = PLAYER_ENDPOINT,
+  playerServerEndpoint = PLAYER_SERVER_ENDPOINT,
+  playerVersion = PLAYER_VERSION,
+  playerJsFileName = PLAYER_JS_FILENAME,
+  playerCssFileName = PLAYER_CSS_FILENAME,
+  setupPlayerFunction = defaultSetupPlayerFunction,
+  ...rest
+} = props;
 
-        if (this.options && this.options.autoplay) {
-          this.play = true; // Plays
-          this.$emit('firstplay', this.player); // Emits firstplay event.
-          this.firstPlay = false; // Sets firstplay to false after emitting.
-          this.isPlaceholderShowing = false; // Hides a placeholder
-        }
+const listeners = useListeners();
 
-        if (this.options && !this.options.poster) {
-          this.isPlaceholderShowing = false;
-        }
+// Refs for player and media elements
+const playerRef = ref<ByteArkPlayer | null>(null);
+const mediaRef = ref<HTMLMediaElement | null>(null);
+const initializeInProgressRef = ref<boolean>(false);
 
-        this.player.on('waiting', () => {
-          this.$emit('waiting', this.player);
-        });
-        if (this.hasEndedListener) {
-          this.player.on('ended', () => {
-            this.videoEnded = true;
-            this.$emit('ended', this.player);
-          });
-        }
-        if (this.hasPlayListener) {
-          this.player.on('play', () => {
-            this.play = true;
-            if (this.firstPlay) {
-              this.$emit('firstplay', this.player);
-              this.firstPlay = false;
-            } else {
-              this.$emit('play', this.player, this.player.currentTime());
-            }
-          });
-        }
-        if (this.hasPauseListener) {
-          this.player.on('pause', () => {
-            if (!this.videoEnded) {
-              this.$emit('pause', this.player, this.player.currentTime());
-            }
-            this.play = false;
-          });
-        }
-        if (this.hasTimeUpdateListener) {
-          this.player.on('timeupdate', () => {
-            this.$emit('timeupdate', this.player, this.player.currentTime());
-          });
-        }
-        if (this.hasSeekListener) {
-          this.player.on('seeking', () => {
-            this.$emit('seeking', this.player, this.player.currentTime());
-          });
-        }
-        if (this.hasFullScreenListener) {
-          this.player.on('fullscreenchange', () => {
-            this.$emit('fullscreenchange', this.player, this.player.isFullscreen());
-          });
-        }
-        if (this.hasVolumeListener) {
-          this.player.on('volumechange', () => {
-            this.$emit('volumechange', this.player, this.player.volume());
-          });
-        }
-        if (this.hasRateListener) {
-          this.player.on('ratechange', () => {
-            this.$emit('ratechange', this.player, this.player.playbackRate());
-          });
-        }
-        if (this.hasPiPListeners) {
-          this.player.on('enterpictureinpicture', () => {
-            this.$emit('enterpictureinpicture', this.player);
-          });
-          this.player.on('leavepictureinpicture', () => {
-            this.$emit('leavepictureinpicture', this.player);
-          });
-        }
-      }
-      this.$emit('created', this.player);
-    },
-    async loadPlayerResources() {
-      try {
-        const promises = [];
-        if (this.defaultOptions.playerSlugId) {
-          promises.push(
-            loadScriptOrStyle(
-              `byteark-player-script-${this.defaultOptions.playerSlugId}`,
-              `${this.defaultOptions.playerServerEndpoint}/${this.defaultOptions.playerSlugId}/libraries/${this.defaultOptions.playerJsFileName}`,
-              'script',
-            ),
-          );
-          promises.push(
-            loadScriptOrStyle(
-              `byteark-player-style-${this.defaultOptions.playerSlugId}`,
-              `${this.defaultOptions.playerServerEndpoint}/${this.defaultOptions.playerSlugId}/libraries/${this.defaultOptions.playerCssFileName}`,
-              'style',
-            ),
-          );
-        } else {
-          promises.push(
-            loadScriptOrStyle(
-              `byteark-player-script-${this.defaultOptions.playerVersion}`,
-              `${this.defaultOptions.playerEndpoint}/${this.defaultOptions.playerVersion}/${this.defaultOptions.playerJsFileName}`,
-              'script',
-            ),
-          );
-          promises.push(
-            loadScriptOrStyle(
-              `byteark-player-style-${this.defaultOptions.playerVersion}`,
-              `${this.defaultOptions.playerEndpoint}/${this.defaultOptions.playerVersion}/${this.defaultOptions.playerCssFileName}`,
-              'style',
-            ),
-          );
-        }
-        await Promise.all(promises);
-      } catch (originalError) {
-        this.defaultOnPlayerLoadingError(originalError);
-        // Rethrow to stop following statements.
-        throw originalError;
-      }
-      this.defaultOnPlayerLoaded();
-    },
-    async setupOptions() {
-      try {
-        const autoplayResult = await window.bytearkPlayer.canAutoplay(this.defaultOptions);
-        const resultPlayerOptions = {
-          ...this.defaultOptions,
-          autoplayResult
-        };
-        return resultPlayerOptions;
-      } catch (originalError) {
-        this.defaultOnPlayerSetupError(originalError);
-        // Rethrow to stop following statements.
-        throw originalError;
-      }
-    },
-    async setupPlayer(resultOptions) {
-      try {
-        await window.bytearkPlayer.setup(resultOptions, loadScriptOrStyle);
+const playerContainerState = reactive<ByteArkPlayerContainerState>({
+  loaded: false,
+  ready: false,
+  error: null,
+  showPlaceholder: true,
+});
 
-        this.defaultOnPlayerSetup();
-      } catch (originalError) {
-        this.defaultOnPlayerSetupError(originalError);
-        // Rethrow to stop following statements.
-        throw originalError;
-      }
-    },
-    async createPlayerInstance(resultOptions) {
-      this.videoNode = this.$refs.videoNode;
+const onPlayerLoaded = () => {
+  if (listeners.onLoaded) {
+    emit('loaded');
+  }
 
-      this.player = await this.defaultCreatePlayerFunction(
-        this.videoNode,
-        resultOptions,
-        this.defaultOnReady,
-      );
-
-      this.defaultOnPlayerCreated();
-    },
-    defaultOnReady() {
-      this.$emit('ready', this.player);
-      this.videoEnded = false;
-    },
-    defaultCreatePlayerFunction(videoNode, options, onReady) {
-      if (window.bytearkPlayer.initAsync) {
-        return window.bytearkPlayer.initAsync(videoNode, options, onReady);
-      }
-      return window.bytearkPlayer.init(videoNode, options, onReady);
-    },
-    overrideDefaultOptions() {
-      this.defaultOptions = {
-        ...this.defaultOptions,
-        ...this.options,
-      };
-    },
-  },
+  if (props.onPlayerLoaded && typeof props.onPlayerLoaded === 'function') {
+    props.onPlayerLoaded();
+  }
 };
-</script>
+const onPlayerLoadError = (
+  error: ByteArkPlayerContainerError,
+  originalError: ByteArkPlayerError | unknown,
+) => {
+  playerContainerState.error = error;
 
-<style lang="scss">
-.byteark-player-container {
-  position: relative;
-  width: 100%;
-  height: auto;
-  .player-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    .video-js {
-      min-width: 100%;
-      min-height: 100%;
+  if (listeners.onLoaderror) {
+    emit('loaderror', error, originalError);
+  }
+
+  if (props.onPlayerLoadError && typeof props.onPlayerLoadError === 'function') {
+    props.onPlayerLoadError(error, originalError);
+  }
+};
+const onPlayerSetup = () => {
+  playerContainerState.loaded = true;
+
+  if (listeners.onSetup) {
+    emit('setup');
+  }
+
+  if (props.onPlayerSetup && typeof props.onPlayerSetup === 'function') {
+    props.onPlayerSetup();
+  }
+};
+const onPlayerSetupError = (
+  error: ByteArkPlayerContainerError,
+  originalError: ByteArkPlayerError | unknown,
+) => {
+  playerContainerState.error = error;
+
+  if (listeners.onSetuperror) {
+    emit('setuperror', error, originalError);
+  }
+
+  if (props.onPlayerSetupError && typeof props.onPlayerSetupError === 'function') {
+    props.onPlayerSetupError(error, originalError);
+  }
+};
+const onPlayerCreated = () => {
+  playerContainerState.showPlaceholder = false;
+
+  const player = toRaw(playerRef.value);
+
+  if (!player) {
+    console.error('Player instance is not available');
+
+    return;
+  }
+
+  if (listeners.onCreated) {
+    emit('created', player);
+  }
+
+  if (props.onPlayerCreated && typeof props.onPlayerCreated === 'function') {
+    props.onPlayerCreated(player);
+  }
+};
+const onPlayerReady = () => {
+  playerContainerState.ready = true;
+
+  const player = toRaw(playerRef.value);
+
+  if (!player) {
+    console.error('Player instance is not available');
+
+    return;
+  }
+
+  if (listeners.onReady) {
+    emit('ready', player);
+  }
+
+  if (props.onPlayerReady && typeof props.onPlayerReady === 'function') {
+    props.onPlayerReady(player);
+  }
+
+  if (listeners.onFirstplay) {
+    player.one('play', () => emit('firstplay', player));
+  }
+
+  if (listeners.onPlay) {
+    player.on('play', () => emit('play', player, player.currentTime()));
+  }
+
+  if (listeners.onPause) {
+    player.on('pause', () => emit('pause', player, player.currentTime()));
+  }
+
+  if (listeners.onEnded) {
+    player.on('ended', () => emit('ended', player));
+  }
+
+  if (listeners.onTimeupdate) {
+    player.on('timeupdate', () => emit('timeupdate', player, player.currentTime()));
+  }
+
+  if (listeners.onSeeking) {
+    player.on('seeking', () => emit('seeking', player, player.currentTime()));
+  }
+
+  if (listeners.onSeeked) {
+    player.on('seeked', () => emit('seeked', player, player.currentTime()));
+  }
+
+  if (listeners.onWaiting) {
+    player.on('waiting', () => emit('waiting', player));
+  }
+
+  if (listeners.onStalled) {
+    player.on('stalled', () => emit('stalled', player));
+  }
+
+  if (listeners.onFullscreenchange) {
+    player.on('fullscreenchange', () => emit('fullscreenchange', player, player.isFullscreen()));
+  }
+
+  if (listeners.onVolumechange) {
+    player.on('volumechange', () => emit('volumechange', player, player.volume()));
+  }
+
+  if (listeners.onRatechange) {
+    player.on('ratechange', () => emit('ratechange', player, player.playbackRate()));
+  }
+
+  if (listeners.onEnterpictureinpicture) {
+    player.on('enterpictureinpicture', () => emit('enterpictureinpicture', player));
+  }
+
+  if (listeners.onLeavepictureinpicture) {
+    player.on('leavepictureinpicture', () => emit('leavepictureinpicture', player));
+  }
+
+  if (listeners.onError) {
+    player.on('error', () => emit('error', player, player.error()));
+  }
+};
+
+// Handle placeholder click for lazy loading
+const onClickPlaceholder = async () => {
+  if (lazyload) {
+    await initializePlayer();
+
+    // Delay play to ensure player is ready
+    setTimeout(async () => await playerRef.value?.play(), 500);
+  }
+
+  playerContainerState.showPlaceholder = false;
+};
+
+// Initialization function
+const initializePlayer = async () => {
+  // we'll not create a real player on server side rendering
+  if (!checkIfCanUseDOM()) {
+    return;
+  }
+
+  // prevent multiple initialization
+  if (initializeInProgressRef.value) {
+    return;
+  }
+
+  initializeInProgressRef.value = true;
+
+  try {
+    await loadPlayerResources({
+      playerJsFileName,
+      playerCssFileName,
+      playerVersion,
+      playerEndpoint,
+      playerServerEndpoint,
+      playerSlugId: rest.playerSlugId,
+    });
+
+    onPlayerLoaded();
+
+    const options = await setupPlayerOptions(toRaw(props.options));
+
+    await setupPlayer(options, setupPlayerFunction);
+
+    onPlayerSetup();
+
+    playerRef.value = await createPlayerInstance(
+      mediaRef.value,
+      options,
+      createPlayerFunction,
+      onPlayerReady,
+    );
+
+    onPlayerCreated();
+  } catch (error) {
+    if (error instanceof LoadPlayerResourceError) {
+      onPlayerSetupError(error, error.originalError);
+    } else if (error instanceof SetupPlayerOptionsError) {
+      onPlayerLoadError(error, error.originalError);
+    } else if (error instanceof ByteArkPlayerContainerError) {
+      playerContainerState.error = error as ByteArkPlayerContainerError;
     }
+
+    console.error(error);
+  } finally {
+    initializeInProgressRef.value = false;
   }
-  &.fill-layout {
-    height: 100%;
+};
+
+// Initialization on component mount
+onMounted(async () => {
+  if (!lazyload) {
+    await initializePlayer();
   }
-}
-</style>
+});
+
+// Cleanup on component unmount
+onUnmounted(() => {
+  if (playerRef.value) {
+    playerRef.value.dispose();
+    playerRef.value = null;
+
+    playerContainerState.ready = false;
+    playerContainerState.loaded = false;
+    playerContainerState.showPlaceholder = true;
+  }
+});
+
+// Watch props and update player if they change
+watch(
+  props,
+  (newProps) => {
+    if (playerRef.value) {
+      updatePlayerOptions(toRaw(playerRef.value), newProps.options);
+    }
+  },
+  { deep: true },
+);
+</script>

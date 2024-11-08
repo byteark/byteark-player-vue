@@ -1,42 +1,84 @@
 {
   "name": "@byteark/byteark-player-vue",
   "version": "4.0.0",
-  "main": "dist/@byteark/byteark-player-vue.umd.js",
-  "description": "ByteArk Player Container for Vue.js",
+  "description": "ByteArk Player Container for Vue",
   "author": "byteark",
   "license": "MIT",
+  "homepage": "https://byteark.github.io/byteark-player-vue",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/byteark/byteark-player-vue.git"
+    "url": "https://github.com/byteark/byteark-player-vue"
   },
-  "scripts": {
-    "build": "vue-cli-service build",
-    "deploy": "gh-pages -d example/dist",
-    "lint": "vue-cli-service lint",
-    "make": "vue-cli-service build --target lib --name @byteark/byteark-player-vue ./src/main.js",
-    "predeploy": "cd example && yarn install && yarn build",
-    "prepublish": "yarn make",
-    "serve": "vue-cli-service serve"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.13",
-    "@vue/cli-service": "~4.5.13",
-    "@vue/compiler-sfc": "^3.1.5",
-    "core-js": "^3.15.2",
-    "gh-pages": "^3.2.3",
-    "sass": "^1.69.2",
-    "sass-loader": "^10.2.0",
-    "vue": "^3.1.5"
-  },
-  "resolutions": {
-    "ssri": "^8.0.1",
-    "is-svg": "^4.2.2"
-  },
-  "files": [
-    "dist"
-  ],
   "bugs": {
     "url": "https://github.com/byteark/byteark-player-vue/issues"
   },
-  "homepage": "https://byteark.github.io/byteark-player-vue/"
+  "main": "./dist/@byteark/byteark-player-vue.umd.cjs",
+  "module": "./dist/@byteark/byteark-player-vue.js",
+  "types": "./dist/@byteark/byteark-player-vue.d.ts",
+  "source": "./src/index.ts",
+  "engines": {
+    "node": ">=16"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "npm run dev",
+    "clean": "rimraf ./dist",
+    "dev": "vite",
+    "deploy": "gh-pages -d dist/example",
+    "build": "vue-tsc --p ./tsconfig.build.json && vite build",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+    "prepublish": "run-s build",
+    "predeploy": "vue-tsc --p ./tsconfig.build.example.json && vite build --config ./vite.config.example.ts",
+    "preview": "vite preview",
+    "prepare": "husky",
+    "commitlint": "commitlint --edit",
+    "update-changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "version": "npm run update-changelog && git add CHANGELOG.md"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "dependencies": {
+    "lodash.omitby": "^4.6.0",
+    "remove": "^0.1.5",
+    "vue": "^3.5.12"
+  },
+  "peerDependencies": {
+    "@types/video.js": "^7.3.58"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "@eslint/js": "^9.14.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/lodash.omitby": "^4.6.9",
+    "@types/node": "^22.8.7",
+    "@types/video.js": "^7.3.58",
+    "@typescript-eslint/eslint-plugin": "^8.12.2",
+    "@typescript-eslint/parser": "^8.12.2",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/babel-plugin-jsx": "^1.2.5",
+    "conventional-changelog-cli": "^5.0.0",
+    "eslint": "^9.14.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-vue": "^9.30.0",
+    "gh-pages": "^6.2.0",
+    "globals": "^15.12.0",
+    "husky": "^9.1.6",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
+    "sass-embedded": "^1.80.6",
+    "typescript": "~5.6.2",
+    "vite": "^5.4.10",
+    "vite-plugin-dts": "^4.3.0",
+    "vue-router": "4",
+    "vue-tsc": "^2.1.8"
+  }
 }
