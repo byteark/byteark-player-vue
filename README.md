@@ -1,6 +1,6 @@
 # ByteArk Player Container for Vue.js
 
-[![NPM](https://img.shields.io/npm/v/@byteark/byteark-player-vue.svg)](https://www.npmjs.com/package/@byteark/byteark-player-vue) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/@byteark/byteark-player-vue.svg)](https://www.npmjs.com/package/@byteark/byteark-player-vue)
 
 Table of Contents
 - [ByteArk Player Container for Vue.js](#byteark-player-container-for-vuejs)
@@ -34,10 +34,10 @@ You can try on [the demo page](https://byteark.github.io/byteark-player-vue/).
 
 Since Vue 3 is not backward compatible, please make sure to install the correct ByteArk Player Container version based on your Vue version.
 
-| Vue Version | Package Version |
-|-------------|-----------------|
-| 2.x         | 3.x             |
-| 3.x         | 4.x             |
+| Vue Version | Package Version | Branch |
+|-------------|-----------------|--------|
+| 2.x         | 3.x             | master |
+| 3.x         | 4.x             | main   |
 
 ## Installation
 
@@ -220,8 +220,8 @@ You may access the player instance from onReady callback parameter.
     @enterpictureinpicture="onPIPEntered"
     @leavepictureinpicture="onPIPExited"
     :options="playerOptions" />
-  <button @click.stop="player?.value.play()">Play</button>
-  <button @click.stop="player?.value.pause()">Pause</button>
+  <button @click="player.value?.play()">Play</button>
+  <button @click="player.value?.pause()">Pause</button>
 </template>
 
 <script setup lang="ts">
