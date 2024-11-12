@@ -5,7 +5,7 @@
         to="/"
         class="navbar-brand"
       >
-        ByteArk Player Container for React
+        ByteArk Player Container for Vue
       </RouterLink>
       <ul class="navbar-nav">
         <li class="nav-item">
