@@ -19,8 +19,10 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/lazyload', name: 'LazyLoad', component: SampleLazyLoadPage },
 ];
 
+const base = import.meta.env.PROD ? '/byteark-player-vue/' : '';
+
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(base),
   routes,
 });
 
