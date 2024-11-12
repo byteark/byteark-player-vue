@@ -16,13 +16,13 @@
         <audio
           v-if="options.audioOnlyMode"
           ref="mediaRef"
-          :class="`video-js ${props.customClass}`"
+          :class="`video-js ${props.customClass || ''}`"
         />
         <video
           v-if="!options.audioOnlyMode"
           ref="mediaRef"
           playsinline
-          :class="`video-js ${props.customClass} ${
+          :class="`video-js ${props.customClass || ''} ${
             props.options.fluid
               ? props.options.aspectRatio === '4:3'
                 ? 'vjs-4-3'
@@ -256,7 +256,9 @@ const onClickPlaceholder = async () => {
     await initializePlayer();
 
     // Delay play to ensure player is ready
-    setTimeout(async () => await playerRef.value?.play(), 500);
+    setTimeout(async () => {
+      await playerRef.value?.play();
+    }, 100);
   }
 
   playerContainerState.showPlaceholder = false;
