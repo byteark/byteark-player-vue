@@ -1,3 +1,12 @@
+## [4.1.2](https://github.com/byteark/byteark-player-vue/compare/v4.1.1...v4.1.2) (2024-11-13)
+
+
+### Bug Fixes
+
+* fixed demo on github page show blank page ([5763b49](https://github.com/byteark/byteark-player-vue/commit/5763b494a9fcd93b9cfefd026f8336ef21f5d910))
+
+
+
 ## [4.1.1](https://github.com/byteark/byteark-player-vue/compare/v4.1.0...v4.1.1) (2024-11-12)
 
 
