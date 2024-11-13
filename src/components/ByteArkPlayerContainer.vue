@@ -248,17 +248,18 @@ const onPlayerReady = () => {
   if (listeners.onError) {
     player.on('error', () => emit('error', player, player.error()));
   }
+
+  if (lazyload) {
+    requestAnimationFrame(async () => {
+      await player.play();
+    });
+  }
 };
 
 // Handle placeholder click for lazy loading
 const onClickPlaceholder = async () => {
   if (lazyload) {
     await initializePlayer();
-
-    // Delay play to ensure player is ready
-    setTimeout(async () => {
-      await playerRef.value?.play();
-    }, 100);
   }
 
   playerContainerState.showPlaceholder = false;
