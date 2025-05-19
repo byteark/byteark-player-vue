@@ -1,4 +1,5 @@
-import videojs from 'video.js';
+import type videojs from '@types/video.js';
+import type { VideoJsPlayer, VideoJsPlayerOptions } from '@types/video.js';
 import { ByteArkPlayerContainerError } from './utils';
 
 declare global {
@@ -15,7 +16,7 @@ declare global {
   }
 }
 
-export interface ByteArkPlayer extends videojs.Player {
+export interface ByteArkPlayer extends VideoJsPlayer {
   info: () => ByteArkPlayerInfo;
   skipIntroTime: (time: number) => void;
   qualityLevels: () => ByteArkPlayerQualityLevelItem[];
@@ -80,7 +81,7 @@ export interface AutoplayResult {
   muted: boolean;
 }
 
-export interface ByteArkPlayerOptions extends videojs.PlayerOptions {
+export interface ByteArkPlayerOptions extends VideoJsPlayerOptions {
   autoplayResult_?: AutoplayResult;
   autoplayadsmuted?: boolean;
   autoSeekToLiveEdge?: boolean;
