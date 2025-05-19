@@ -1,11 +1,7 @@
 import { isBrowserSupportDrm } from './drm';
+import { LoadPlayerResourceError, SetupPlayerOptionsError, SetupPlayerError, CreatePlayerError } from './error';
 import { loadScriptOrStyle } from './loadScriptOrStyle';
-import {
-  LoadPlayerResourceError,
-  SetupPlayerOptionsError,
-  SetupPlayerError,
-  CreatePlayerError,
-} from './error';
+
 import type {
   ByteArkPlayer,
   ByteArkPlayerOptions,
@@ -26,14 +22,8 @@ type LoadPlayerResourceConfig = Pick<
 
 export async function loadPlayerResources(config: LoadPlayerResourceConfig) {
   try {
-    const {
-      playerJsFileName,
-      playerCssFileName,
-      playerVersion,
-      playerEndpoint,
-      playerServerEndpoint,
-      playerSlugId,
-    } = config;
+    const { playerJsFileName, playerCssFileName, playerVersion, playerEndpoint, playerServerEndpoint, playerSlugId } =
+      config;
 
     const promises: Promise<void>[] = [];
 
@@ -106,10 +96,7 @@ export async function setupPlayerOptions(options: ByteArkPlayerOptions) {
   }
 }
 
-export async function setupPlayer(
-  options: ByteArkPlayerOptions,
-  setupPlayerFunction: ISetupPlayerFunction,
-) {
+export async function setupPlayer(options: ByteArkPlayerOptions, setupPlayerFunction: ISetupPlayerFunction) {
   try {
     await setupPlayerFunction(options, loadScriptOrStyle);
   } catch (error) {

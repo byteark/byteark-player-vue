@@ -37,6 +37,7 @@
 import ByteArkPlayerContainer from '../../src';
 import { SiteNav, VideoInfo } from '../components';
 import { videos } from '../videos';
+
 import type { ByteArkPlayerOptions } from '../../src';
 
 const options: ByteArkPlayerOptions = {

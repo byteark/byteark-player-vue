@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, watch, onMounted, onUnmounted, toRaw } from 'vue';
-import PlayerPlaceholder from './PlayerPlaceholder.vue';
+
 import {
   PLAYER_ENDPOINT,
   PLAYER_SERVER_ENDPOINT,
@@ -62,6 +62,9 @@ import {
   SetupPlayerOptionsError,
   useListeners,
 } from '../utils';
+
+import PlayerPlaceholder from './PlayerPlaceholder.vue';
+
 import type {
   ByteArkPlayerContainerProps,
   ByteArkPlayerContainerEvents,
@@ -114,10 +117,7 @@ const onPlayerLoaded = () => {
   }
 };
 
-const onPlayerLoadError = (
-  error: ByteArkPlayerContainerError,
-  originalError: ByteArkPlayerError | unknown,
-) => {
+const onPlayerLoadError = (error: ByteArkPlayerContainerError, originalError: ByteArkPlayerError | unknown) => {
   playerContainerState.error = error;
 
   if (listeners.onLoaderror) {
@@ -141,10 +141,7 @@ const onPlayerSetup = () => {
   }
 };
 
-const onPlayerSetupError = (
-  error: ByteArkPlayerContainerError,
-  originalError: ByteArkPlayerError | unknown,
-) => {
+const onPlayerSetupError = (error: ByteArkPlayerContainerError, originalError: ByteArkPlayerError | unknown) => {
   playerContainerState.error = error;
 
   if (listeners.onSetuperror) {
@@ -303,12 +300,7 @@ const initializePlayer = async () => {
 
     onPlayerSetup();
 
-    playerRef.value = await createPlayerInstance(
-      mediaRef.value,
-      options,
-      createPlayerFunction,
-      onPlayerReady,
-    );
+    playerRef.value = await createPlayerInstance(mediaRef.value, options, createPlayerFunction, onPlayerReady);
 
     onPlayerCreated();
   } catch (error) {
@@ -342,8 +334,8 @@ onUnmounted(() => {
   }
 
   // reset state to initial
-  playerContainerState.loaded =false;
-  playerContainerState.ready =false;
+  playerContainerState.loaded = false;
+  playerContainerState.ready = false;
   playerContainerState.error = null;
   playerContainerState.showPlaceholder = true;
 

@@ -1,4 +1,5 @@
 import { ByteArkPlayerContainer } from './components';
+
 export default ByteArkPlayerContainer;
 
 export { isBrowserSupportDrm } from './utils';

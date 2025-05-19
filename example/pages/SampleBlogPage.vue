@@ -78,9 +78,11 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
+
 import ByteArkPlayerContainer from '../../src';
 import { SiteHeader } from '../components';
 import { videos } from '../videos';
+
 import type { ByteArkPlayerOptions } from '../../src';
 
 const options: ByteArkPlayerOptions = {

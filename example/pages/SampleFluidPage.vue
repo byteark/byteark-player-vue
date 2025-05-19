@@ -40,11 +40,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+
 import ByteArkPlayerContainer from '../../src';
 import { SiteNav, VideoList, VideoInfo } from '../components';
 import { videos } from '../videos';
-import type { IVideo } from '../videos';
+
 import type { ByteArkPlayerOptions } from '../../src';
+import type { IVideo } from '../videos';
 
 const video = ref(videos[0]);
 

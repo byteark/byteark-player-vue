@@ -15,6 +15,7 @@
 <script setup lang="ts">
 import ByteArkPlayerContainer from '../../src';
 import { videos } from '../videos';
+
 import type { ByteArkPlayerOptions } from '../../src';
 
 const options: ByteArkPlayerOptions = {

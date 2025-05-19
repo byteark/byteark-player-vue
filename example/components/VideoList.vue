@@ -16,8 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import VideoListItem from './VideoListItem.vue';
 import { IVideo } from '../videos';
+
+import VideoListItem from './VideoListItem.vue';
 
 const props = defineProps<{
   videos: IVideo[];

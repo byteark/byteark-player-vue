@@ -4,13 +4,10 @@ export const defaultCreatePlayerFunction: ICreatePlayerFunction = (node, options
   if (window.bytearkPlayer.initAsync) {
     return window.bytearkPlayer.initAsync(node, options, onReady);
   }
+
   return window.bytearkPlayer.init(node, options, onReady);
 };
 
-export const defaultSetupPlayerFunction: ISetupPlayerFunction = async (
-  options,
-  loaderFunction,
-  loadPluginOptions,
-) => {
+export const defaultSetupPlayerFunction: ISetupPlayerFunction = async (options, loaderFunction, loadPluginOptions) => {
   await window.bytearkPlayer.setup(options, loaderFunction, loadPluginOptions);
 };

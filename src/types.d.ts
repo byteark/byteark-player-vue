@@ -1,6 +1,7 @@
+import { ByteArkPlayerContainerError } from './utils';
+
 import type videojs from '@types/video.js';
 import type { VideoJsPlayer, VideoJsPlayerOptions } from '@types/video.js';
-import { ByteArkPlayerContainerError } from './utils';
 
 declare global {
   interface Window {
@@ -327,17 +328,9 @@ export type IOnPlayerSetupErrorFunction = (
 
 export interface ByteArkPlayerContainerEvents {
   (e: 'loaded'): void;
-  (
-    e: 'loaderror',
-    error: ByteArkPlayerContainerError,
-    originalError: ByteArkPlayerError | unknown,
-  ): void;
+  (e: 'loaderror', error: ByteArkPlayerContainerError, originalError: ByteArkPlayerError | unknown): void;
   (e: 'setup'): void;
-  (
-    e: 'setuperror',
-    error: ByteArkPlayerContainerError,
-    originalError: ByteArkPlayerError | unknown,
-  ): void;
+  (e: 'setuperror', error: ByteArkPlayerContainerError, originalError: ByteArkPlayerError | unknown): void;
   (e: 'created', player: ByteArkPlayer): void;
   (e: 'ready', player: ByteArkPlayer): void;
   (e: 'firstplay', player: ByteArkPlayer): void;
@@ -354,9 +347,5 @@ export interface ByteArkPlayerContainerEvents {
   (e: 'ratechange', player: ByteArkPlayer, playbackSpeed: number): void;
   (e: 'enterpictureinpicture', player: ByteArkPlayer): void;
   (e: 'leavepictureinpicture', player: ByteArkPlayer): void;
-  (
-    e: 'error',
-    player: ByteArkPlayer,
-    error: ByteArkPlayerError | MediaError | unknown | null,
-  ): void;
+  (e: 'error', player: ByteArkPlayer, error: ByteArkPlayerError | MediaError | unknown | null): void;
 }

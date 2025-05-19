@@ -29,8 +29,11 @@
 
 <script setup lang="ts">
 import { CSSProperties } from 'vue';
-import PlayerLoadErrorMessage from './PlayerLoadErrorMessage.vue';
+
 import { ByteArkPlayerContainerError, getPlaceholderPaddingTopFromAspectRatio } from '../utils';
+
+import PlayerLoadErrorMessage from './PlayerLoadErrorMessage.vue';
+
 import type { ByteArkPlayerOptions } from '../types';
 
 interface Props {
@@ -58,9 +61,7 @@ const placeholderCustomStyle: CSSProperties = {
 };
 
 if (options.fluid) {
-  placeholderCustomStyle.paddingTop = `${getPlaceholderPaddingTopFromAspectRatio(
-    props.aspectRatio || '16:9',
-  )}%`;
+  placeholderCustomStyle.paddingTop = `${getPlaceholderPaddingTopFromAspectRatio(props.aspectRatio || '16:9')}%`;
 }
 
 if (!options.fluid && options.fill) {
@@ -99,6 +100,5 @@ const pathStyle: CSSProperties = {
   transform: 'translateX(13px) translateY(9px) scale(0.7)',
 };
 
-const shouldShowPlayIcon =
-  options.controls === undefined || options.controls === null || options.controls === true;
+const shouldShowPlayIcon = options.controls === undefined || options.controls === null || options.controls === true;
 </script>
