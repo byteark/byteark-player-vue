@@ -1,3 +1,17 @@
+## [4.1.3](https://github.com/byteark/byteark-player-vue/compare/v4.1.2...v4.1.3) (2025-05-19)
+
+
+### Bug Fixes
+
+* conflict import type by import from @types/video.js ([d561d6b](https://github.com/byteark/byteark-player-vue/commit/d561d6b6a6b98a280459b47bd861b5cd1407d2d9))
+
+
+### Features
+
+* reset component state and clear resource when component unmounted ([9729e50](https://github.com/byteark/byteark-player-vue/commit/9729e5037f420a71c2c9dd08dd541b59c625c748))
+
+
+
 ## [4.1.2](https://github.com/byteark/byteark-player-vue/compare/v4.1.1...v4.1.2) (2024-11-13)
 
 
