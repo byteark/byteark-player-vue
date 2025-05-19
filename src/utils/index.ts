@@ -4,6 +4,7 @@ export { updatePlayerOptions } from './updatePlayerOptions';
 export { defaultCreatePlayerFunction, defaultSetupPlayerFunction } from './functions';
 export {
   loadPlayerResources,
+  clearPlayerResources,
   setupPlayerOptions,
   setupPlayer,
   createPlayerInstance,

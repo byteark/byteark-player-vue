@@ -51,6 +51,7 @@ import {
   updatePlayerOptions,
   checkIfCanUseDOM,
   loadPlayerResources,
+  clearPlayerResources,
   setupPlayerOptions,
   setupPlayer,
   createPlayerInstance,
@@ -112,6 +113,7 @@ const onPlayerLoaded = () => {
     props.onPlayerLoaded();
   }
 };
+
 const onPlayerLoadError = (
   error: ByteArkPlayerContainerError,
   originalError: ByteArkPlayerError | unknown,
@@ -126,6 +128,7 @@ const onPlayerLoadError = (
     props.onPlayerLoadError(error, originalError);
   }
 };
+
 const onPlayerSetup = () => {
   playerContainerState.loaded = true;
 
@@ -137,6 +140,7 @@ const onPlayerSetup = () => {
     props.onPlayerSetup();
   }
 };
+
 const onPlayerSetupError = (
   error: ByteArkPlayerContainerError,
   originalError: ByteArkPlayerError | unknown,
@@ -151,6 +155,7 @@ const onPlayerSetupError = (
     props.onPlayerSetupError(error, originalError);
   }
 };
+
 const onPlayerCreated = () => {
   playerContainerState.showPlaceholder = false;
 
@@ -170,6 +175,7 @@ const onPlayerCreated = () => {
     props.onPlayerCreated(player);
   }
 };
+
 const onPlayerReady = () => {
   playerContainerState.ready = true;
 
@@ -331,12 +337,21 @@ onMounted(async () => {
 onUnmounted(() => {
   if (playerRef.value) {
     playerRef.value.dispose();
-    playerRef.value = null;
 
-    playerContainerState.ready = false;
-    playerContainerState.loaded = false;
-    playerContainerState.showPlaceholder = true;
+    playerRef.value = null;
   }
+
+  // reset state to initial
+  playerContainerState.loaded =false;
+  playerContainerState.ready =false;
+  playerContainerState.error = null;
+  playerContainerState.showPlaceholder = true;
+
+  // reset the initialize in progress flag
+  initializeInProgressRef.value = false;
+
+  // remove the player resources
+  clearPlayerResources();
 });
 
 // Watch props and update player if they change
